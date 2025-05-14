@@ -1,24 +1,102 @@
 [
-    {
-      "id": 1,
-      "name": "Park Hayarkon Trail",
-      "latitude": 32.0961,
-      "longitude": 34.809,
-      "length_km": 4.5
-    },
-    {
-      "id": 2,
-      "name": "Herzliya Seaside Path",
-      "latitude": 32.1633,
-      "longitude": 34.8082,
-      "length_km": 6.2
-    },
-    {
-      "id": 3,
-      "name": "Tel Aviv Port Loop",
-      "latitude": 32.096,
-      "longitude": 34.7736,
-      "length_km": 3.1
-    }
-  ]
-  
+  {
+    "id": 1,
+    "name": "Park Hayarkon Trail",
+    "latitude": 32.0961,
+    "longitude": 34.809,
+    "length_km": 4.5,
+    "history": "Park Hayarkon was once a seasonal swamp before being transformed into Tel Aviv\u2019s largest green space.",
+    "checkpoints": [
+      {
+        "lat": 32.0965,
+        "lon": 34.805,
+        "title": "Yarkon Springs",
+        "quiz": {
+          "question": "What natural feature used to dominate this area?",
+          "options": [
+            "Forest",
+            "Swamp",
+            "Desert",
+            "Lake"
+          ],
+          "answer": "Swamp"
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Caesarea Aqueduct Trail",
+    "latitude": 32.5068,
+    "longitude": 34.8918,
+    "length_km": 2.3,
+    "history": "This trail runs alongside an ancient Roman aqueduct that once supplied water to the city of Caesarea, built by Herod the Great.",
+    "checkpoints": [
+      {
+        "lat": 32.5072,
+        "lon": 34.892,
+        "title": "Roman Aqueduct",
+        "quiz": {
+          "question": "Who built the city of Caesarea?",
+          "options": [
+            "Pontius Pilate",
+            "Herod the Great",
+            "Julius Caesar",
+            "King David"
+          ],
+          "answer": "Herod the Great"
+        }
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Masada Snake Path",
+    "latitude": 31.3156,
+    "longitude": 35.3531,
+    "length_km": 2.0,
+    "history": "The Snake Path is a historical ascent to Masada, where Jewish rebels made a final stand against Rome in 73 CE.",
+    "checkpoints": [
+      {
+        "lat": 31.316,
+        "lon": 35.3535,
+        "title": "Snake Path Viewpoint",
+        "quiz": {
+          "question": "When did the siege of Masada take place?",
+          "options": [
+            "70 CE",
+            "66 CE",
+            "73 CE",
+            "80 CE"
+          ],
+          "answer": "73 CE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Tel Aviv Port Loop",
+    "latitude": 32.096,
+    "longitude": 34.7736,
+    "length_km": 3.1,
+    "history": "The Tel Aviv Port was once Israel's main gateway for maritime trade and is now a recreational hub with deep historical roots.",
+    "checkpoints": [
+      {
+        "lat": 32.0962,
+        "lon": 34.774,
+        "title": "Old Port Warehouse",
+        "quiz": {
+          "question": "What was the original function of the Tel Aviv Port?",
+          "options": [
+            "Fishing",
+            "Trade",
+            "Military base",
+            "Shipbuilding"
+          ],
+          "answer": "Trade"
+        }
+      }
+    ]
+  }
+]

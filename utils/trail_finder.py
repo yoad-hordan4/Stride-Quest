@@ -3,8 +3,10 @@ from geopy.distance import distance
 from pathlib import Path
 
 TRAILS_PATH = Path(__file__).resolve().parent.parent / "data" / "sample_trails.json"
+MAX_DIST=100  #also change in script!
 
-def find_nearby_trails(user_lat, user_lon, radius_km=10):
+
+def find_nearby_trails(user_lat, user_lon, radius_km=MAX_DIST):
     with open(TRAILS_PATH, "r") as f:
         trails = json.load(f)
 
