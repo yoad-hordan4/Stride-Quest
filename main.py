@@ -1,5 +1,8 @@
 from fastapi import FastAPI
 from routes import quizzes, trails
+from routes import trails
+
+app = FastAPI()
 
 app = FastAPI(
     title="StrideQuest API",
@@ -13,5 +16,5 @@ app.include_router(quizzes.router, prefix="/quizzes", tags=["Quizzes"])
 
 
 @app.get("/")
-def read_root():
-    return {"message": "Welcome to StrideQuest!"}
+def home():
+    return {"message": "Welcome to StrideQuest API"}
