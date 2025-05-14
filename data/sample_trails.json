@@ -3,19 +3,22 @@
       "id": 1,
       "name": "Park Hayarkon Trail",
       "latitude": 32.0961,
-      "longitude": 34.8090
+      "longitude": 34.809,
+      "length_km": 4.5
     },
     {
       "id": 2,
       "name": "Herzliya Seaside Path",
       "latitude": 32.1633,
-      "longitude": 34.8082
+      "longitude": 34.8082,
+      "length_km": 6.2
     },
     {
       "id": 3,
       "name": "Tel Aviv Port Loop",
-      "latitude": 32.0960,
-      "longitude": 34.7736
+      "latitude": 32.096,
+      "longitude": 34.7736,
+      "length_km": 3.1
     }
   ]
   
