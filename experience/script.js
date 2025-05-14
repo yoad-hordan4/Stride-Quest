@@ -67,24 +67,6 @@ function getTrailInfo() {
     `;
 }
 
-
-function startHike(trailId) {
-    const trail = nearbyTrails.find(t => t.id == trailId);
-    if (!trail) {
-      alert("Trail not found.");
-      return;
-    }
-  
-    document.getElementById('trailInfo').innerHTML = `
-      <h2>🗺️ ${trail.name} - Hike in Progress</h2>
-      <p>${trail.history}</p>
-      <p><em>Stay close to your phone. We’ll notify you when you reach checkpoints!</em></p>
-    `;
-  
-    // We'll implement live GPS tracking and quizzes here later
-    console.log("Starting hike on:", trail);
-}
-
 let currentCheckpointIndex = 0;
 let currentTrail = null;
 let watcherId = null;
@@ -97,15 +79,25 @@ function startHike(trailId) {
     alert("No checkpoints available for this trail.");
     return;
   }
+  console.log(`🚶‍♂️ Starting hike on: ${currentTrail.name}`);
+  console.log(`⏩ Current checkpoint: ${currentTrail.checkpoints[0].title}`);
+
 
   document.getElementById('trailInfo').innerHTML = `
-    <h2>🗺️ ${currentTrail.name} - Hike in Progress</h2>
-    <p>${currentTrail.history}</p>
-    <div id="checkpointArea" style="margin-top:20px;">
-      <p><strong>Next checkpoint:</strong> ${currentTrail.checkpoints[0].title}</p>
-      <button onclick="skipToNextCheckpoint()">🚀 Skip to next (dev only)</button>
-    </div>
+  <h2>🗺️ ${currentTrail.name} - Hike in Progress</h2>
+  <p>${currentTrail.history}</p>
+
+  <div id="progressDisplay">
+    <progress id="trailProgress" value="0" max="1" style="width:100%;"></progress>
+    <p id="progressLabel">Checkpoint 1 of ${currentTrail.checkpoints.length}</p>
+  </div>
+
+  <div id="checkpointArea" style="margin-top:20px;">
+    <p><strong>Next checkpoint:</strong> ${currentTrail.checkpoints[0].title}</p>
+    <button onclick="skipToNextCheckpoint()">🚀 Skip to next (dev only)</button>
+  </div>
   `;
+
 
   if (navigator.geolocation) {
     watcherId = navigator.geolocation.watchPosition(handlePositionUpdate, showError, {
@@ -116,6 +108,7 @@ function startHike(trailId) {
   } else {
     alert("Geolocation is not supported by your browser.");
   }
+  updateProgress();
 }
 
 function handlePositionUpdate(position) {
@@ -149,8 +142,13 @@ function toRad(value) {
   
 
 function triggerCheckpoint(checkpoint) {
+    console.log(`📍 Reached checkpoint ${currentCheckpointIndex + 1}: ${checkpoint.title}`);
+    updateProgress();
+    playBeep();
+    if ("vibrate" in navigator) {
+        navigator.vibrate(300); // vibrate 300ms
+    }
     navigator.geolocation.clearWatch(watcherId);
-  
     document.getElementById('checkpointArea').innerHTML = `
       <h3>📍 ${checkpoint.title}</h3>
       <p><strong>Quiz:</strong> ${checkpoint.quiz.question}</p>
@@ -180,8 +178,9 @@ function checkAnswer(selected, correct) {
 
 
 function nextCheckpoint() {
+    updateProgress();
     currentCheckpointIndex++;
-  
+    console.log(`➡️ Moving to checkpoint ${currentCheckpointIndex + 1}`);
     if (currentCheckpointIndex >= currentTrail.checkpoints.length) {
       document.getElementById('checkpointArea').innerHTML = `<h3>🎉 Trail Complete!</h3>`;
       return;
@@ -199,6 +198,25 @@ function nextCheckpoint() {
       maximumAge: 1000,
       timeout: 10000
     });
+}
+
+function updateProgress() {
+    const total = currentTrail.checkpoints.length;
+    const current = currentCheckpointIndex;
+    const progress = Math.min(current / total, 1);
+    document.getElementById('trailProgress').value = progress;
+    document.getElementById('progressLabel').innerText = `Checkpoint ${current + 1} of ${total}`;
+}
+  
+
+function playBeep() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(880, ctx.currentTime);
+    oscillator.connect(ctx.destination);
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + 0.2);
 }
   
 
