@@ -1,5 +1,5 @@
 geopy
 fastapi
-uvicorn
+uvicorn[standard]
 setuptools
 starlette
