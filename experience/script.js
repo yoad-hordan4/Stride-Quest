@@ -232,7 +232,15 @@ function playBeep() {
 }
 
 function showError(error) {
-  alert("Error getting location: " + error.message);
+    console.warn("📛 Geolocation error:", error.message);
+  
+    const banner = document.getElementById("errorBanner");
+    banner.style.display = "block";
+    banner.textContent = "⚠️ Location error: " + error.message;
+  
+    // Dev fallback (optional):
+    console.log("🧪 Using fallback location: Tel Aviv");
+    showPosition({ coords: { latitude: 32.0853, longitude: 34.7818 } });
 }
 
 function initMap(lat, lon) {
