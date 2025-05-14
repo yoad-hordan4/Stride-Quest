@@ -1,8 +1,14 @@
 from fastapi import FastAPI
 from routes import quizzes, trails
 from routes import trails
+from fastapi.staticfiles import StaticFiles
+import os
 
 app = FastAPI()
+
+# Mount frontend
+frontend_path = os.path.join(os.path.dirname(__file__), "..", "experience")
+app.mount("/experience", StaticFiles(directory=frontend_path, html=True), name="experience")
 
 app = FastAPI(
     title="StrideQuest API",

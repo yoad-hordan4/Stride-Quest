@@ -16,3 +16,13 @@ def find_nearby_trails(user_lat, user_lon, radius_km=10):
             nearby.append(trail)
 
     return sorted(nearby, key=lambda t: t["distance_km"])
+
+
+def get_trail_by_id(trail_id: int):
+    with open(TRAILS_PATH, "r") as f:
+        trails = json.load(f)
+    for trail in trails:
+        if trail["id"] == trail_id:
+            return trail
+    return None
+

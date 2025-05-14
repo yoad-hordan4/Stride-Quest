@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StrideQuest Trail Selector</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>StrideQuest Trail Selector</h1>
+
+  <button onclick="getLocation()">Find Nearby Trails</button>
+  <div id="trailSelectArea" style="display:none">
+    <select id="trailSelect"></select>
+    <button onclick="getTrailInfo()">Get Trail Info</button>
+  </div>
+  <div id="trailInfo" class="info"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
