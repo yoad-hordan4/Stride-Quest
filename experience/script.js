@@ -1,4 +1,5 @@
 let nearbyTrails = [];
+const BASE_URL = `${window.location.origin}`;
 
 let currentCheckpointIndex = 0;
 let currentTrail = null;
@@ -18,7 +19,8 @@ function showPosition(position) {
   const lon = position.coords.longitude;
   console.log("📍 Location:", lat, lon);
 
-  fetch('http://localhost:8000/trails/nearby', {
+  console.log("🌐 Fetching from:", `${BASE_URL}/trails/nearby`);
+  fetch(`${BASE_URL}/trails/nearby`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ latitude: lat, longitude: lon, radius_km: 100 })
@@ -60,8 +62,7 @@ function getTrailInfo() {
 
   document.getElementById('trailInfo').innerHTML = `
     <h3>${selected.name}</h3>
-    <p><strong>ID:</strong> ${selected.id}</p>
-    <p><strong>Location:</strong> ${selected.latitude}, ${selected.longitude}</p>
+    <p><strong>Location:</strong> ${selected.closest_city}</p>
     <p><strong>Trail length:</strong> ${selected.length_km ?? 'unknown'} km</p>
     <p><strong>Distance from you:</strong> ${selected.distance_km ?? 'N/A'} km</p>
     <p><strong>History:</strong> ${selected.history ?? 'No history available.'}</p>

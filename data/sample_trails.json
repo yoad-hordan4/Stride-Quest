@@ -5,6 +5,7 @@
       "latitude": 32.0961,
       "longitude": 34.809,
       "length_km": 4.5,
+      "closest_city": "Tel Aviv",
       "history": "Park Hayarkon was once a seasonal swamp before being transformed into Tel Aviv\u2019s largest green space.",
       "checkpoints": [
         {
@@ -30,6 +31,7 @@
       "latitude": 32.5068,
       "longitude": 34.8918,
       "length_km": 2.3,
+      "closest_city": "Caesarea",
       "history": "This trail runs alongside an ancient Roman aqueduct that once supplied water to the city of Caesarea, built by Herod the Great.",
       "checkpoints": [
         {
@@ -55,6 +57,7 @@
       "latitude": 31.3156,
       "longitude": 35.3531,
       "length_km": 2.0,
+      "closest_city": "Masada",
       "history": "The Snake Path is a historical ascent to Masada, where Jewish rebels made a final stand against Rome in 73 CE.",
       "checkpoints": [
         {
@@ -80,6 +83,7 @@
       "latitude": 32.096,
       "longitude": 34.7736,
       "length_km": 3.1,
+      "closest_city": "Tel Aviv",
       "history": "The Tel Aviv Port was once Israel's main gateway for maritime trade and is now a recreational hub with deep historical roots.",
       "checkpoints": [
         {
