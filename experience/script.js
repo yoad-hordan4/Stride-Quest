@@ -66,56 +66,79 @@ function getTrailInfo() {
 }
 
 function startHike(trailId) {
-  currentTrail = nearbyTrails.find(t => t.id == trailId);
-  currentCheckpointIndex = 0;
-
-  if (!currentTrail?.checkpoints?.length) {
-    return alert("No checkpoints available for this trail.");
-  }
-
-  document.getElementById('gameArea').innerHTML = `
-    <h2>🗺️ ${currentTrail.name} - Hike in Progress</h2>
-    <p>${currentTrail.history}</p>
-    <div id="progressDisplay">
-      <progress id="trailProgress" value="0" max="1" style="width:100%;"></progress>
-      <p id="progressLabel">Checkpoint 1 of ${currentTrail.checkpoints.length}</p>
-    </div>
-    <div id="map"></div>
-    <div id="checkpointArea">
-      <p><strong>Next checkpoint:</strong> ${currentTrail.checkpoints[0].title}</p>
-      <button onclick="skipToNextCheckpoint()">🚀 Skip to next (dev only)</button>
-    </div>
-  `;
-
-  document.getElementById('preGame').style.display = 'none';
-  document.getElementById('gameArea').style.display = 'block';
-  document.getElementById('exitGame').style.display = 'block';
-
-  watcherId = navigator.geolocation.watchPosition(pos => {
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
-    if (!map) initMap(lat, lon);
-    else userMarker.setLatLng([lat, lon]);
-    handlePositionUpdate(pos);
-  }, showError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
-
-  updateProgress();
+    currentTrail = nearbyTrails.find(t => t.id == trailId);
+    currentCheckpointIndex = 0;
+  
+    if (!currentTrail || !currentTrail.checkpoints?.length) {
+      alert("No checkpoints available for this trail.");
+      return;
+    }
+  
+    // 👉 Hide all pre-game UI
+    document.getElementById('preGame').style.display = 'none';
+    document.getElementById('trailInfo').style.display = 'none';
+    document.getElementById('trailSelectArea').style.display = 'none';
+    document.getElementById('exitGame').style.display = 'block';
+    document.getElementById('gameArea').style.display = 'block';
+  
+    // 🚨 Clear previous content just in case
+    document.getElementById('trailInfo').innerHTML = '';
+    document.getElementById('gameArea').innerHTML = `
+      <h2>🗺️ ${currentTrail.name} - Hike in Progress</h2>
+      <p>${currentTrail.history}</p>
+  
+      <div id="progressDisplay">
+        <progress id="trailProgress" value="0" max="1" style="width:100%;"></progress>
+        <p id="progressLabel">Checkpoint 1 of ${currentTrail.checkpoints.length}</p>
+      </div>
+  
+      <div id="map" style="height: 300px; margin-top: 20px;"></div>
+  
+      <div id="checkpointArea" style="margin-top:20px;">
+        <p><strong>Next checkpoint:</strong> ${currentTrail.checkpoints[0].title}</p>
+        <button onclick="skipToNextCheckpoint()">🚀 Skip to next (dev only)</button>
+      </div>
+    `;
+  
+    console.log(`🚶‍♂️ Starting hike on: ${currentTrail.name}`);
+    console.log(`⏩ Current checkpoint: ${currentTrail.checkpoints[0].title}`);
+  
+    // 📍 Start live tracking
+    watcherId = navigator.geolocation.watchPosition(pos => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      if (!map) initMap(lat, lon);
+      else userMarker.setLatLng([lat, lon]);
+      handlePositionUpdate(pos);
+    }, showError, {
+      enableHighAccuracy: true,
+      maximumAge: 1000,
+      timeout: 10000
+    });
+  
+    updateProgress();
 }
+  
 
 function exitGame() {
-  if (!confirm("Are you sure you want to exit the hike?")) return;
-  if (watcherId) navigator.geolocation.clearWatch(watcherId);
-
-  currentTrail = null;
-  map = null;
-
-  document.getElementById('gameArea').style.display = 'none';
-  document.getElementById('exitGame').style.display = 'none';
-  document.getElementById('preGame').style.display = 'block';
-  document.getElementById('trailInfo').innerHTML = '';
-  document.getElementById('trailInfo').style.display = 'none';
-  document.getElementById('trailSelectArea').style.display = 'none';
+    if (confirm("Are you sure you want to exit the hike?")) {
+      document.getElementById('preGame').style.display = 'block';
+      document.getElementById('trailInfo').style.display = 'none';
+      document.getElementById('trailSelectArea').style.display = 'none';
+      document.getElementById('gameArea').style.display = 'none';
+      document.getElementById('exitGame').style.display = 'none';
+  
+      // Clear game state
+      document.getElementById('gameArea').innerHTML = '';
+      currentCheckpointIndex = 0;
+      currentTrail = null;
+  
+      if (watcherId) {
+        navigator.geolocation.clearWatch(watcherId);
+      }
+    }
 }
+  
 
 function handlePositionUpdate(position) {
   const userLat = position.coords.latitude;
