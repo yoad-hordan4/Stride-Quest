@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="data:,">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>StrideQuest Trail Selector</title>
@@ -51,6 +50,20 @@
       background-color: #7aad59;
     }
 
+    .exit-button {
+      background-color: #cc3333;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 0;
+      display: none;
+    }
+
     select {
       width: 100%;
       padding: 0.5rem;
@@ -67,12 +80,8 @@
       overflow: hidden;
     }
 
-    .info, #trailSelectArea {
+    .info {
       margin-top: 1rem;
-    }
-
-    #trailInfo {
-      display: none;
     }
 
     #errorBanner {
@@ -82,10 +91,6 @@
       padding: 1rem;
       border-radius: 8px;
       margin-top: 1rem;
-    }
-
-    .checkpoint-option button {
-      margin: 0.25rem 0;
     }
 
     @media (min-width: 768px) {
@@ -98,24 +103,21 @@
 <body>
   <header>StrideQuest</header>
   <main>
-    <button onclick="getLocation()">📍 Find Nearby Trails</button>
-    <div id="trailSelectArea" style="display:none">
-      <select id="trailSelect"></select>
-      <button onclick="getTrailInfo()">📄 Get Trail Info</button>
+    <div id="preGame">
+      <button onclick="getLocation()">📍 Find Nearby Trails</button>
+      <div id="trailSelectArea" style="display:none">
+        <select id="trailSelect"></select>
+        <button onclick="getTrailInfo()">📄 Get Trail Info</button>
+      </div>
+      <div id="trailInfo" class="info"></div>
+      <div id="errorBanner">⚠️ Location error: Unable to access your position.</div>
     </div>
-    <div id="trailInfo" class="info"></div>
-    <div id="errorBanner">⚠️ Location error: Unable to access your position.</div>
+
+    <div id="gameArea" style="display:none"></div>
+
+    <button id="exitGame" class="exit-button" onclick="exitGame()">❌ Exit Game</button>
   </main>
-  <script>
-    // Reveal trailInfo only when populated
-    const observer = new MutationObserver(() => {
-      const trailInfo = document.getElementById('trailInfo');
-      if (trailInfo.innerHTML.trim()) {
-        trailInfo.style.display = 'block';
-      }
-    });
-    observer.observe(document.getElementById('trailInfo'), { childList: true });
-  </script>
+
   <script src="script.js"></script>
 </body>
 </html>
