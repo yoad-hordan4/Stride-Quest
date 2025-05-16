@@ -6,6 +6,7 @@
       "longitude": 34.809,
       "length_km": 4.5,
       "closest_city": "Tel Aviv",
+      "image_url":"/experience/images/default-stridequest.jpg",
       "history": "Park Hayarkon was once a seasonal swamp before being transformed into Tel Aviv\u2019s largest green space.",
       "checkpoints": [
         {
@@ -32,12 +33,14 @@
       "longitude": 34.8918,
       "length_km": 2.3,
       "closest_city": "Caesarea",
+      "image_url": "/experience/images/caesarea.jpg",
       "history": "This trail runs alongside an ancient Roman aqueduct that once supplied water to the city of Caesarea, built by Herod the Great.",
       "checkpoints": [
         {
           "lat": 32.5072,
           "lon": 34.892,
           "title": "Roman Aqueduct",
+          
           "quiz": {
             "question": "Who built the city of Caesarea?",
             "options": [
@@ -58,6 +61,7 @@
       "longitude": 35.3531,
       "length_km": 2.0,
       "closest_city": "Masada",
+      "image_url":"/experience/images/yarkon.jpg",
       "history": "The Snake Path is a historical ascent to Masada, where Jewish rebels made a final stand against Rome in 73 CE.",
       "checkpoints": [
         {
@@ -84,6 +88,7 @@
       "longitude": 34.7736,
       "length_km": 3.1,
       "closest_city": "Tel Aviv",
+      "image_url":"/experience/images/default-stridequest.jpg",
       "history": "The Tel Aviv Port was once Israel's main gateway for maritime trade and is now a recreational hub with deep historical roots.",
       "checkpoints": [
         {

@@ -2,103 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StrideQuest Trail Selector</title>
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fdfbe9;
-      color: #2e3d27;
       margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fefde5;
+      color: #2e3d27;
     }
 
     header {
-      background-color: #a4c686;
-      color: white;
-      text-align: center;
+      background-color: #8fcf3c;
       padding: 1rem;
-      font-size: 1.5rem;
+      text-align: center;
+      color: white;
+      font-size: 2rem;
       font-weight: bold;
     }
 
     main {
-      padding: 1rem;
       max-width: 600px;
       margin: auto;
+      padding: 2rem;
     }
 
     button {
-      background-color: #8fbf68;
+      background-color: #a2d149;
       border: none;
-      border-radius: 8px;
       color: white;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
+      font-size: 1.2rem;
+      padding: 1rem;
+      border-radius: 12px;
       margin: 0.5rem 0;
       cursor: pointer;
       width: 100%;
     }
 
     button:hover {
-      background-color: #7aad59;
-    }
-
-    .exit-button {
-      background-color: #cc3333;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      padding: 1rem;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 0;
-      display: none;
+      background-color: #92bd3b;
     }
 
     select {
       width: 100%;
-      padding: 0.5rem;
-      margin-bottom: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    #map {
-      height: 300px;
-      margin-top: 1rem;
-      border-radius: 8px;
-      overflow: hidden;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      margin: 1rem 0;
     }
 
     .info {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 10px;
       margin-top: 1rem;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
 
     #errorBanner {
-      display: none;
-      background-color: #ffcccc;
-      color: #660000;
-      padding: 1rem;
+      background-color: #ffe0e0;
+      color: #b20000;
+      padding: 0.75rem;
       border-radius: 8px;
       margin-top: 1rem;
     }
-
-    @media (min-width: 768px) {
-      main {
-        padding: 2rem;
-      }
-    }
   </style>
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header>StrideQuest</header>
@@ -112,12 +82,6 @@
       <div id="trailInfo" class="info"></div>
       <div id="errorBanner">⚠️ Location error: Unable to access your position.</div>
     </div>
-
-    <div id="gameArea" style="display:none"></div>
-
-    <button id="exitGame" class="exit-button" onclick="exitGame()">❌ Exit Game</button>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>
