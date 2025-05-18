@@ -1,109 +1,109 @@
-// Handles both index.html and hike.html
 let nearbyTrails = [];
-const BASE_URL = window.location.origin;
-let currentTrail = null;
+const BASE_URL = `${window.location.origin}`;
+
 let currentCheckpointIndex = 0;
+let currentTrail = null;
 let watcherId = null;
-let map, userMarker;
+let map, userMarker, checkpointMarkers = [];
 
-// Page: index.html
-if (
-  window.location.pathname === "/experience/" ||
-  window.location.pathname === "/experience/index.html"
-) {
-  // ✅ Expose globally for onclick in HTML
-  window.getLocation = function () {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else {
-      alert("Geolocation not supported.");
-    }
-  };
-
-  function showPosition(position) {
-    fetch(`${BASE_URL}/trails/nearby`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        radius_km: 100
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        nearbyTrails = data;
-        const select = document.getElementById("trailSelect");
-        select.innerHTML = "";
-        data.forEach(trail => {
-          const opt = document.createElement("option");
-          opt.value = trail.id;
-          opt.text = `${trail.name} (${trail.distance_km} km away)`;
-          select.appendChild(opt);
-        });
-        document.getElementById("trailSelectArea").style.display = "block";
-      });
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, showError);
+  } else {
+    alert("Geolocation is not supported by this browser.");
   }
-
-  window.getTrailInfo = function () {
-    const trailId = document.getElementById("trailSelect").value;
-    const trail = nearbyTrails.find(t => t.id == trailId);
-    if (!trail) return;
-    document.getElementById("trailInfo").innerHTML = `
-      <h3>${trail.name}</h3>
-      <p><strong>Location:</strong> ${trail.closest_city}</p>
-      <p><strong>Length:</strong> ${trail.length_km ?? 'unknown'} km</p>
-      <p><strong>Distance:</strong> ${trail.distance_km ?? 'N/A'} km</p>
-      <p><strong>History:</strong> ${trail.history ?? 'N/A'}</p>
-      <img src="${trail.image_url || '/experience/images/default-stridequest.jpg'}" alt="${trail.name} image" style="width: 100%; border-radius: 12px; margin: 1rem 0;" />
-      <button onclick="startHike(${trail.id})">🚀 Start Hike</button>
-    `;
-    document.getElementById("trailInfo").style.display = "block";
-  };
-
-  window.startHike = function (trailId) {
-    localStorage.setItem("selectedTrailId", trailId);
-    window.location.href = "hike.html";
-  };
 }
 
-// Page: hike.html
-if (window.location.pathname.includes("hike")) {
-  document.addEventListener("DOMContentLoaded", () => {
-    const trailId = localStorage.getItem("selectedTrailId");
-    if (!trailId) return alert("No trail selected.");
-    fetch(`${BASE_URL}/trails/${trailId}`)
-      .then(res => res.json())
-      .then(trail => {
-        currentTrail = trail;
-        currentCheckpointIndex = 0;
-        renderGameUI();
-        startTracking();
-      });
-  });
+function showPosition(position) {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
 
-  function renderGameUI() {
-    const trail = currentTrail;
-    document.getElementById("gameArea").innerHTML = `
-      <h2>${trail.name} - Hike in Progress</h2>
-      <p>${trail.history}</p>
-      <img src="${trail.image_url || '/experience/images/default-stridequest.jpg'}"
-           alt="${trail.name} image"
-           style="width: 100%; border-radius: 12px; margin: 1rem 0;" />
+  fetch(`${BASE_URL}/trails/nearby`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ latitude: lat, longitude: lon, radius_km: 100 })
+  })
+  .then(res => res.json())
+  .then(data => {
+    nearbyTrails = data;
+    const select = document.getElementById('trailSelect');
+    select.innerHTML = '';
+
+    data.forEach(trail => {
+      const option = document.createElement('option');
+      option.value = trail.id;
+      option.text = `${trail.name} (${trail.distance_km} km away)`;
+      select.appendChild(option);
+    });
+
+    if (data.length > 0) {
+      document.getElementById('trailSelectArea').style.display = 'block';
+    } else {
+      alert("No nearby trails found.");
+    }
+  })
+  .catch(error => {
+    console.error("Failed to fetch trails:", error);
+  });
+}
+
+function getTrailInfo() {
+  const trailId = document.getElementById('trailSelect').value;
+  const selected = nearbyTrails.find(t => t.id == trailId);
+
+  if (!selected) return alert("Trail not found.");
+
+  const info = document.getElementById('trailInfo');
+  info.innerHTML = `
+    <h3>${selected.name}</h3>
+    <p><strong>Location:</strong> ${selected.closest_city}</p>
+    <p><strong>Trail length:</strong> ${selected.length_km ?? 'unknown'} km</p>
+    <p><strong>Distance from you:</strong> ${selected.distance_km ?? 'N/A'} km</p>
+    <p><strong>History:</strong> ${selected.history ?? 'No history available.'}</p>
+    <button onclick="startHike(${selected.id})">Start Hike</button>
+  `;
+  info.style.display = 'block';
+}
+
+function startHike(trailId) {
+    currentTrail = nearbyTrails.find(t => t.id == trailId);
+    currentCheckpointIndex = 0;
+  
+    if (!currentTrail || !currentTrail.checkpoints?.length) {
+      alert("No checkpoints available for this trail.");
+      return;
+    }
+  
+    // 👉 Hide all pre-game UI
+    document.getElementById('preGame').style.display = 'none';
+    document.getElementById('trailInfo').style.display = 'none';
+    document.getElementById('trailSelectArea').style.display = 'none';
+    document.getElementById('exitGame').style.display = 'block';
+    document.getElementById('gameArea').style.display = 'block';
+  
+    // 🚨 Clear previous content just in case
+    document.getElementById('trailInfo').innerHTML = '';
+    document.getElementById('gameArea').innerHTML = `
+      <h2>🗺️ ${currentTrail.name} - Hike in Progress</h2>
+      <p>${currentTrail.history}</p>
+  
       <div id="progressDisplay">
-        <progress id="trailProgress" value="0" max="1" style="width: 100%;"></progress>
-        <p id="progressLabel">Checkpoint 1 of ${trail.checkpoints.length}</p>
+        <progress id="trailProgress" value="0" max="1" style="width:100%;"></progress>
+        <p id="progressLabel">Checkpoint 1 of ${currentTrail.checkpoints.length}</p>
       </div>
-      <div id="map" style="height: 300px;"></div>
-      <div id="checkpointArea">
-        <p><strong>Next checkpoint:</strong> ${trail.checkpoints[0].title}</p>
-        <button onclick="skipToNextCheckpoint()">🚀 Skip (dev only)</button>
+  
+      <div id="map" style="height: 300px; margin-top: 20px;"></div>
+  
+      <div id="checkpointArea" style="margin-top:20px;">
+        <p><strong>Next checkpoint:</strong> ${currentTrail.checkpoints[0].title}</p>
+        <button onclick="skipToNextCheckpoint()">🚀 Skip to next (dev only)</button>
       </div>
     `;
-    updateProgress();
-  }
-
-  function startTracking() {
+  
+    console.log(`🚶‍♂️ Starting hike on: ${currentTrail.name}`);
+    console.log(`⏩ Current checkpoint: ${currentTrail.checkpoints[0].title}`);
+  
+    // 📍 Start live tracking
     watcherId = navigator.geolocation.watchPosition(pos => {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
@@ -115,96 +115,134 @@ if (window.location.pathname.includes("hike")) {
       maximumAge: 1000,
       timeout: 10000
     });
-  }
-
-  function handlePositionUpdate(pos) {
-    const cp = currentTrail.checkpoints[currentCheckpointIndex];
-    const dist = getDistance(pos.coords.latitude, pos.coords.longitude, cp.lat, cp.lon);
-    if (dist < 0.05) triggerCheckpoint(cp);
-  }
-
-  function triggerCheckpoint(cp) {
+  
     updateProgress();
-    navigator.geolocation.clearWatch(watcherId);
-    document.getElementById("checkpointArea").innerHTML = `
-      <h3>📍 ${cp.title}</h3>
-      <p><strong>Quiz:</strong> ${cp.quiz.question}</p>
-      ${cp.quiz.options.map(opt =>
-        `<button onclick="checkAnswer('${opt}', '${cp.quiz.answer}')">${opt}</button>`
-      ).join("")}
-    `;
-  }
+}
+  
 
-  window.skipToNextCheckpoint = () => {
-    const cp = currentTrail.checkpoints[currentCheckpointIndex];
-    triggerCheckpoint(cp);
-  };
-
-  window.checkAnswer = (selected, correct) => {
-    const result = selected === correct
-      ? "✅ Correct!"
-      : `❌ The correct answer was: ${correct}`;
-    document.getElementById("checkpointArea").innerHTML = `
-      <p>${result}</p>
-      <button onclick="nextCheckpoint()">➡️ Continue</button>
-    `;
-  };
-
-  window.nextCheckpoint = () => {
-    currentCheckpointIndex++;
-    if (currentCheckpointIndex >= currentTrail.checkpoints.length) {
-      document.getElementById("checkpointArea").innerHTML = "<h3>🎉 Trail Complete!</h3>";
-      return;
+function exitGame() {
+    if (confirm("Are you sure you want to exit the hike?")) {
+      document.getElementById('preGame').style.display = 'block';
+      document.getElementById('trailInfo').style.display = 'none';
+      document.getElementById('trailSelectArea').style.display = 'none';
+      document.getElementById('gameArea').style.display = 'none';
+      document.getElementById('exitGame').style.display = 'none';
+  
+      // Clear game state
+      document.getElementById('gameArea').innerHTML = '';
+      currentCheckpointIndex = 0;
+      currentTrail = null;
+  
+      if (watcherId) {
+        navigator.geolocation.clearWatch(watcherId);
+      }
     }
-    const cp = currentTrail.checkpoints[currentCheckpointIndex];
-    document.getElementById("checkpointArea").innerHTML = `
-      <p><strong>Next checkpoint:</strong> ${cp.title}</p>
-      <button onclick="skipToNextCheckpoint()">🚀 Skip (dev only)</button>
-    `;
-    startTracking();
-    updateProgress();
-  };
+}
+  
 
-  window.exitGame = () => {
-    if (watcherId) navigator.geolocation.clearWatch(watcherId);
-    localStorage.removeItem("selectedTrailId");
-    window.location.href = "index.html";
-  };
+function handlePositionUpdate(position) {
+  const userLat = position.coords.latitude;
+  const userLon = position.coords.longitude;
+  const checkpoint = currentTrail.checkpoints[currentCheckpointIndex];
+  const dist = getDistance(userLat, userLon, checkpoint.lat, checkpoint.lon);
+  if (dist < 0.05) triggerCheckpoint(checkpoint);
+}
 
-  function updateProgress() {
-    const total = currentTrail.checkpoints.length;
-    const current = currentCheckpointIndex;
-    const progress = Math.min(current / total, 1);
-    document.getElementById("trailProgress").value = progress;
-    document.getElementById("progressLabel").innerText = `Checkpoint ${current + 1} of ${total}`;
+function triggerCheckpoint(cp) {
+  updateProgress();
+  playBeep();
+  if ("vibrate" in navigator) navigator.vibrate(300);
+  navigator.geolocation.clearWatch(watcherId);
+  document.getElementById('checkpointArea').innerHTML = `
+    <h3>📍 ${cp.title}</h3>
+    <p><strong>Quiz:</strong> ${cp.quiz.question}</p>
+    ${cp.quiz.options.map(opt => `<button onclick="checkAnswer('${opt}', '${cp.quiz.answer}')">${opt}</button>`).join('')}
+  `;
+}
+
+function checkAnswer(selected, correct) {
+  const result = selected === correct
+    ? "✅ Correct! Great job."
+    : `❌ Oops! The correct answer was: ${correct}`;
+
+  document.getElementById('checkpointArea').innerHTML = `
+    <p>${result}</p>
+    <button onclick="nextCheckpoint()">➡️ Continue</button>
+  `;
+}
+
+function nextCheckpoint() {
+  currentCheckpointIndex++;
+  if (currentCheckpointIndex >= currentTrail.checkpoints.length) {
+    document.getElementById('checkpointArea').innerHTML = `<h3>🎉 Trail Complete!</h3>`;
+    return;
   }
 
-  function getDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a = Math.sin(dLat / 2) ** 2 +
-              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-              Math.sin(dLon / 2) ** 2;
-    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-  }
+  const cp = currentTrail.checkpoints[currentCheckpointIndex];
+  document.getElementById('checkpointArea').innerHTML = `
+    <p><strong>Next checkpoint:</strong> ${cp.title}</p>
+    <button onclick="skipToNextCheckpoint()">🚀 Skip to next (dev only)</button>
+  `;
 
-  function toRad(val) {
-    return val * Math.PI / 180;
-  }
+  watcherId = navigator.geolocation.watchPosition(pos => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+    if (!map) initMap(lat, lon);
+    else userMarker.setLatLng([lat, lon]);
+    handlePositionUpdate(pos);
+  }, showError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
 
-  function initMap(lat, lon) {
-    map = L.map("map").setView([lat, lon], 15);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap contributors"
-    }).addTo(map);
-    userMarker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
-    currentTrail.checkpoints.forEach(cp =>
-      L.marker([cp.lat, cp.lon]).addTo(map).bindPopup(cp.title)
-    );
-  }
+  updateProgress();
+}
 
-  function showError(err) {
-    alert("⚠️ Location error: " + err.message);
-  }
+function skipToNextCheckpoint() {
+  triggerCheckpoint(currentTrail.checkpoints[currentCheckpointIndex]);
+}
+
+function updateProgress() {
+  const total = currentTrail.checkpoints.length;
+  const current = currentCheckpointIndex;
+  const progress = Math.min(current / total, 1);
+  document.getElementById('trailProgress').value = progress;
+  document.getElementById('progressLabel').innerText = `Checkpoint ${current + 1} of ${total}`;
+}
+
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) ** 2;
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
+
+function toRad(value) {
+  return value * Math.PI / 180;
+}
+
+function playBeep() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(880, ctx.currentTime);
+  osc.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.2);
+}
+
+function showError(error) {
+  document.getElementById("errorBanner").style.display = "block";
+  document.getElementById("errorBanner").textContent = "⚠️ Location error: " + error.message;
+  showPosition({ coords: { latitude: 32.0853, longitude: 34.7818 } });
+}
+
+function initMap(lat, lon) {
+  map = L.map('map').setView([lat, lon], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  userMarker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
+  checkpointMarkers = currentTrail.checkpoints.map(cp => L.marker([cp.lat, cp.lon]).addTo(map).bindPopup(cp.title));
 }

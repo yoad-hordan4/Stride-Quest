@@ -22,8 +22,6 @@ app.add_middleware(
 # ✅ Mount frontend
 experience_dir = Path(__file__).resolve().parent / "experience"
 app.mount("/experience", StaticFiles(directory=experience_dir, html=True), name="experience")
-app.mount("/experience/images", StaticFiles(directory="experience/images"), name="images")
-
 
 # ✅ API routes
 app.include_router(trails.router, prefix="/trails", tags=["Trails"])
