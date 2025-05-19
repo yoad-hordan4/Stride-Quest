@@ -6,6 +6,16 @@ let currentTrail = null;
 let watcherId = null;
 let map, userMarker, checkpointMarkers = [];
 
+// ✅ Expose public functions so buttons can call them
+window.getLocation = getLocation;
+window.getTrailInfo = getTrailInfo;
+window.startHike = startHike;
+window.exitGame = exitGame;
+window.skipToNextCheckpoint = skipToNextCheckpoint;
+window.checkAnswer = checkAnswer;
+window.nextCheckpoint = nextCheckpoint;
+
+
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -238,11 +248,18 @@ function showError(error) {
 }
 
 function initMap(lat, lon) {
-  map = L.map('map').setView([lat, lon], 15);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
-  userMarker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
-  checkpointMarkers = currentTrail.checkpoints.map(cp => L.marker([cp.lat, cp.lon]).addTo(map).bindPopup(cp.title));
-}
+    if (map) {
+      map.remove(); // ✅ destroy previous map instance
+    }
+  
+    map = L.map('map').setView([lat, lon], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+  
+    userMarker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
+    checkpointMarkers = currentTrail.checkpoints.map(cp =>
+      L.marker([cp.lat, cp.lon]).addTo(map).bindPopup(cp.title)
+    );
+  }
+  
