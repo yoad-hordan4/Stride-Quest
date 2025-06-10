@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from routes import quizzes, trails
+from routes import challenges
 from pathlib import Path
 
 app = FastAPI(
@@ -26,6 +27,7 @@ app.mount("/experience", StaticFiles(directory=experience_dir, html=True), name=
 # ✅ API routes
 app.include_router(trails.router, prefix="/trails", tags=["Trails"])
 app.include_router(quizzes.router, prefix="/quizzes", tags=["Quizzes"])
+app.include_router(challenges.router, prefix="/challenges", tags=["Challenges"])
 
 # ✅ Default redirect
 @app.get("/", include_in_schema=False)
