@@ -1,111 +1,370 @@
 [
-    {
-      "id": 1,
-      "name": "Park Hayarkon Trail",
-      "latitude": 32.0961,
-      "longitude": 34.809,
-      "length_km": 4.5,
-      "closest_city": "Tel Aviv",
-      "image_url":"/experience/images/default-stridequest.jpg",
-      "history": "Park Hayarkon was once a seasonal swamp before being transformed into Tel Aviv\u2019s largest green space.",
-      "checkpoints": [
-        {
-          "lat": 32.0965,
-          "lon": 34.805,
-          "title": "Yarkon Springs",
-          "quiz": {
-            "question": "What natural feature used to dominate this area?",
-            "options": [
-              "Forest",
-              "Swamp",
-              "Desert",
-              "Lake"
-            ],
-            "answer": "Swamp"
-          }
+  {
+    "id": 1,
+    "name": "Park Hayarkon Trail",
+    "latitude": 32.0961,
+    "longitude": 34.809,
+    "length_km": 4.5,
+    "closest_city": "Tel Aviv",
+    "image_url": "/experience/images/default-stridequest.jpg",
+    "history": "Park Hayarkon was once a seasonal swamp before being transformed into Tel Aviv's largest green space.",
+    "checkpoints": [
+      {
+        "lat": 32.0965,
+        "lon": 34.805,
+        "title": "Yarkon Springs",
+        "quiz": {
+          "question": "What natural feature used to dominate this area?",
+          "options": [
+            "Forest",
+            "Swamp",
+            "Desert",
+            "Lake"
+          ],
+          "answer": "Swamp"
+        },
+        "challenge": {
+          "type": "photo",
+          "keyword": "springs",
+          "prompt": "Take a photo of the Yarkon Springs and add a short summary."
         }
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Caesarea Aqueduct Trail",
-      "latitude": 32.5068,
-      "longitude": 34.8918,
-      "length_km": 2.3,
-      "closest_city": "Caesarea",
-      "image_url": "/experience/images/caesarea.jpg",
-      "history": "This trail runs alongside an ancient Roman aqueduct that once supplied water to the city of Caesarea, built by Herod the Great.",
-      "checkpoints": [
-        {
-          "lat": 32.5072,
-          "lon": 34.892,
-          "title": "Roman Aqueduct",
-          
-          "quiz": {
-            "question": "Who built the city of Caesarea?",
-            "options": [
-              "Pontius Pilate",
-              "Herod the Great",
-              "Julius Caesar",
-              "King David"
-            ],
-            "answer": "Herod the Great"
-          }
+      },
+      {
+        "lat": 32.097,
+        "lon": 34.806,
+        "title": "Bicycle Bridge",
+        "quiz": {
+          "question": "Which mode of transport is this bridge primarily designed for?",
+          "options": [
+            "Cars",
+            "Trains",
+            "Bicycles",
+            "Pedestrians"
+          ],
+          "answer": "Bicycles"
         }
-      ]
-    },
-    {
-      "id": 3,
-      "name": "Masada Snake Path",
-      "latitude": 31.3156,
-      "longitude": 35.3531,
-      "length_km": 2.0,
-      "closest_city": "Masada",
-      "image_url":"/experience/images/yarkon.jpg",
-      "history": "The Snake Path is a historical ascent to Masada, where Jewish rebels made a final stand against Rome in 73 CE.",
-      "checkpoints": [
-        {
-          "lat": 31.316,
-          "lon": 35.3535,
-          "title": "Snake Path Viewpoint",
-          "quiz": {
-            "question": "When did the siege of Masada take place?",
-            "options": [
-              "70 CE",
-              "66 CE",
-              "73 CE",
-              "80 CE"
-            ],
-            "answer": "73 CE"
-          }
+      },
+      {
+        "lat": 32.0975,
+        "lon": 34.807,
+        "title": "Picnic Grove",
+        "quiz": {
+          "question": "What activity is common in this area?",
+          "options": [
+            "Camping",
+            "Surfing",
+            "Picnicking",
+            "Skiing"
+          ],
+          "answer": "Picnicking"
         }
-      ]
-    },
-    {
-      "id": 4,
-      "name": "Tel Aviv Port Loop",
-      "latitude": 32.096,
-      "longitude": 34.7736,
-      "length_km": 3.1,
-      "closest_city": "Tel Aviv",
-      "image_url":"/experience/images/default-stridequest.jpg",
-      "history": "The Tel Aviv Port was once Israel's main gateway for maritime trade and is now a recreational hub with deep historical roots.",
-      "checkpoints": [
-        {
-          "lat": 32.0962,
-          "lon": 34.774,
-          "title": "Old Port Warehouse",
-          "quiz": {
-            "question": "What was the original function of the Tel Aviv Port?",
-            "options": [
-              "Fishing",
-              "Trade",
-              "Military base",
-              "Shipbuilding"
-            ],
-            "answer": "Trade"
-          }
+      },
+      {
+        "lat": 32.098,
+        "lon": 34.808,
+        "title": "Birdwatch Point",
+        "quiz": {
+          "question": "Which of these birds is often seen here?",
+          "options": [
+            "Eagle",
+            "Seagull",
+            "Pelican",
+            "Sparrow"
+          ],
+          "answer": "Sparrow"
         }
-      ]
-    }
-  ]
+      },
+      {
+        "lat": 32.0985,
+        "lon": 34.809,
+        "title": "Riverside Exit",
+        "quiz": {
+          "question": "Where does this trail lead you back to?",
+          "options": [
+            "City Center",
+            "Riverside",
+            "Mountain Top",
+            "Desert"
+          ],
+          "answer": "Riverside"
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Caesarea Aqueduct Trail",
+    "latitude": 32.5071,
+    "longitude": 34.8928,
+    "length_km": 2.3,
+    "closest_city": "Caesarea",
+    "image_url": "/experience/images/caesarea.jpg",
+    "history": "This trail runs alongside an ancient Roman aqueduct that once supplied water to the city of Caesarea, built by Herod the Great.",
+    "checkpoints": [
+      {
+        "lat": 32.5086,
+        "lon": 34.892,
+        "title": "Roman Aqueduct",
+        "quiz": {
+          "question": "Who built the city of Caesarea?",
+          "options": [
+            "Pontius Pilate",
+            "Herod the Great",
+            "Julius Caesar",
+            "King David"
+          ],
+          "answer": "Herod the Great"
+        },
+        "challenge": {
+          "type": "photo",
+          "keyword": "aqueduct",
+          "prompt": "Take a photo of the Roman Aqueduct and add a short summary."
+        }
+      },
+      {
+        "lat": 32.5078,
+        "lon": 34.8925,
+        "title": "Ancient Harbor",
+        "quiz": {
+          "question": "What empire built the original harbor here?",
+          "options": [
+            "Roman",
+            "Ottoman",
+            "British",
+            "Greek"
+          ],
+          "answer": "Roman"
+        }
+      },
+      {
+        "lat": 32.5069,
+        "lon": 34.8929,
+        "title": "Crusader Gate",
+        "quiz": {
+          "question": "In which era was this gate constructed?",
+          "options": [
+            "Byzantine",
+            "Crusader",
+            "Mamluk",
+            "Modern"
+          ],
+          "answer": "Crusader"
+        }
+      },
+      {
+        "lat": 32.5061,
+        "lon": 34.8933,
+        "title": "Museum Plaza",
+        "quiz": {
+          "question": "What type of museum is nearby?",
+          "options": [
+            "Art",
+            "Maritime",
+            "Science",
+            "Fashion"
+          ],
+          "answer": "Maritime"
+        }
+      },
+      {
+        "lat": 32.5053,
+        "lon": 34.8937,
+        "title": "Beach Lookout",
+        "quiz": {
+          "question": "What sea are you overlooking?",
+          "options": [
+            "Dead Sea",
+            "Mediterranean Sea",
+            "Red Sea",
+            "Sea of Galilee"
+          ],
+          "answer": "Mediterranean Sea"
+        }
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Masada Snake Path",
+    "latitude": 31.3156,
+    "longitude": 35.3531,
+    "length_km": 2.0,
+    "closest_city": "Masada",
+    "image_url": "/experience/images/yarkon.jpg",
+    "history": "The Snake Path is a historical ascent to Masada, where Jewish rebels made a final stand against Rome in 73 CE.",
+    "checkpoints": [
+      {
+        "lat": 31.316,
+        "lon": 35.3535,
+        "title": "Snake Path Viewpoint",
+        "quiz": {
+          "question": "When did the siege of Masada take place?",
+          "options": [
+            "70 CE",
+            "66 CE",
+            "73 CE",
+            "80 CE"
+          ],
+          "answer": "73 CE"
+        },
+        "challenge": {
+          "type": "photo",
+          "keyword": "viewpoint",
+          "prompt": "Take a photo of the Snake Path Viewpoint and add a short summary."
+        }
+      },
+      {
+        "lat": 31.3163,
+        "lon": 35.3538,
+        "title": "Eastern Rampart",
+        "quiz": {
+          "question": "Which group fortified Masada?",
+          "options": [
+            "Romans",
+            "Jews",
+            "Nabateans",
+            "Byzantines"
+          ],
+          "answer": "Jews"
+        }
+      },
+      {
+        "lat": 31.3166,
+        "lon": 35.3541,
+        "title": "Northern Palace",
+        "quiz": {
+          "question": "Who built the Northern Palace?",
+          "options": [
+            "Herod the Great",
+            "King David",
+            "Caesar Augustus",
+            "Pontius Pilate"
+          ],
+          "answer": "Herod the Great"
+        }
+      },
+      {
+        "lat": 31.3169,
+        "lon": 35.3544,
+        "title": "Water Cisterns",
+        "quiz": {
+          "question": "What resource was stored here?",
+          "options": [
+            "Wine",
+            "Grain",
+            "Water",
+            "Oil"
+          ],
+          "answer": "Water"
+        }
+      },
+      {
+        "lat": 31.3172,
+        "lon": 35.3547,
+        "title": "Summit Fortress",
+        "quiz": {
+          "question": "What was Masada primarily used for?",
+          "options": [
+            "Market",
+            "Fortress",
+            "Palace",
+            "Temple"
+          ],
+          "answer": "Fortress"
+        }
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Tel Aviv Port Loop",
+    "latitude": 32.096,
+    "longitude": 34.7736,
+    "length_km": 3.1,
+    "closest_city": "Tel Aviv",
+    "image_url": "/experience/images/default-stridequest.jpg",
+    "history": "The Tel Aviv Port was once Israel's main gateway for maritime trade and is now a recreational hub with deep historical roots.",
+    "checkpoints": [
+      {
+        "lat": 32.0962,
+        "lon": 34.774,
+        "title": "Old Port Warehouse",
+        "quiz": {
+          "question": "What was the original function of the Tel Aviv Port?",
+          "options": [
+            "Fishing",
+            "Trade",
+            "Military base",
+            "Shipbuilding"
+          ],
+          "answer": "Trade"
+        },
+        "challenge": {
+          "type": "photo",
+          "keyword": "warehouse",
+          "prompt": "Take a photo of the Old Port Warehouse and add a short summary."
+        }
+      },
+      {
+        "lat": 32.0966,
+        "lon": 34.7744,
+        "title": "Hangar 11",
+        "quiz": {
+          "question": "What is Hangar 11 now used for?",
+          "options": [
+            "Events",
+            "Storage",
+            "Military",
+            "Housing"
+          ],
+          "answer": "Events"
+        }
+      },
+      {
+        "lat": 32.097,
+        "lon": 34.7748,
+        "title": "Promenade Start",
+        "quiz": {
+          "question": "Which recreational activity is popular here?",
+          "options": [
+            "Cycling",
+            "Skiing",
+            "Rock Climbing",
+            "Paragliding"
+          ],
+          "answer": "Cycling"
+        }
+      },
+      {
+        "lat": 32.0974,
+        "lon": 34.7752,
+        "title": "Lighthouse Point",
+        "quiz": {
+          "question": "What structure once guided ships here?",
+          "options": [
+            "Fortress",
+            "Lighthouse",
+            "Skyscraper",
+            "Windmill"
+          ],
+          "answer": "Lighthouse"
+        }
+      },
+      {
+        "lat": 32.0978,
+        "lon": 34.7756,
+        "title": "Farmers Market",
+        "quiz": {
+          "question": "What can you buy here weekly?",
+          "options": [
+            "Electronics",
+            "Fresh produce",
+            "Cars",
+            "Furniture"
+          ],
+          "answer": "Fresh produce"
+        }
+      }
+    ]
+  }
+]
