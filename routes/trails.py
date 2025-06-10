@@ -8,7 +8,7 @@ router = APIRouter()
 class LocationInput(BaseModel):
     latitude: float
     longitude: float
-    radius_km: float = 10
+    radius_km: float = 200
 
 @router.post("/nearby")
 def get_nearby_trails(location: LocationInput):
