@@ -27,7 +27,6 @@
           "type": "photo",
           "keyword": "springs",
           "prompt": "Take a photo of the Yarkon Springs and add a short summary."
-
         }
       },
       {
@@ -103,7 +102,7 @@
     "history": "This trail runs alongside an ancient Roman aqueduct that once supplied water to the city of Caesarea, built by Herod the Great.",
     "checkpoints": [
       {
-        "lat": 32.5072,
+        "lat": 32.5086,
 
         "lon": 34.892,
         "title": "Roman Aqueduct",
@@ -156,7 +155,6 @@
       {
         "lat": 32.5061,
         "lon": 34.8933,
-
         "title": "Museum Plaza",
         "quiz": {
           "question": "What type of museum is nearby?",
@@ -172,7 +170,6 @@
       {
         "lat": 32.5053,
         "lon": 34.8937,
-
         "title": "Beach Lookout",
         "quiz": {
           "question": "What sea are you overlooking?",
