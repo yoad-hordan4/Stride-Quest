@@ -31,7 +31,7 @@ function showPosition(position) {
   fetch(`${BASE_URL}/trails/nearby`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ latitude: lat, longitude: lon, radius_km: 100 })
+    body: JSON.stringify({ latitude: lat, longitude: lon, radius_km: 500 })
   })
   .then(res => res.json())
   .then(data => {
