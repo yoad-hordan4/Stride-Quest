@@ -6,7 +6,7 @@ from geopy.distance import distance
 
 # Constants
 TRAILS_PATH = Path(__file__).resolve().parent.parent / "data" / "sample_trails.json"
-MAX_DIST = 100  # in km, must match frontend expectation
+MAX_DIST = 200  # in km, must match frontend expectation
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
