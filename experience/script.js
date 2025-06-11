@@ -263,7 +263,9 @@ function initMap(lat, lon) {
       L.marker([cp.lat, cp.lon]).addTo(map).bindPopup(cp.title)
     );
 
-    const points = currentTrail.checkpoints.map(cp => [cp.lat, cp.lon]);
+    const points = (currentTrail.gpx_points && currentTrail.gpx_points.length)
+      ? currentTrail.gpx_points.map(p => [p.lat, p.lon])
+      : currentTrail.checkpoints.map(cp => [cp.lat, cp.lon]);
     if (trailLine) trailLine.remove();
     trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
   }
