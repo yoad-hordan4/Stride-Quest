@@ -5,6 +5,7 @@ let currentCheckpointIndex = 0;
 let currentTrail = null;
 let watcherId = null;
 let map, userMarker, checkpointMarkers = [];
+let trailLine = null;
 
 // ✅ Expose public functions so buttons can call them
 window.getLocation = getLocation;
@@ -31,7 +32,7 @@ function showPosition(position) {
   fetch(`${BASE_URL}/trails/nearby`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ latitude: lat, longitude: lon, radius_km: 500 })
+    body: JSON.stringify({ latitude: lat, longitude: lon, radius_km: 200 })
   })
   .then(res => res.json())
   .then(data => {
@@ -251,15 +252,19 @@ function initMap(lat, lon) {
     if (map) {
       map.remove(); // ✅ destroy previous map instance
     }
-  
+
     map = L.map('map').setView([lat, lon], 15);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
-  
+
     userMarker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
     checkpointMarkers = currentTrail.checkpoints.map(cp =>
       L.marker([cp.lat, cp.lon]).addTo(map).bindPopup(cp.title)
     );
+
+    const points = currentTrail.checkpoints.map(cp => [cp.lat, cp.lon]);
+    if (trailLine) trailLine.remove();
+    trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
   }
   
