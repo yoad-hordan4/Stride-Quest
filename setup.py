@@ -10,6 +10,7 @@ setup(
         "uvicorn",
         "pydantic",
         "folium",
+        "gpxpy",
     ],
     entry_points={
         "console_scripts": [
