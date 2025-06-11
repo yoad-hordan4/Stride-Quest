@@ -1,5 +1,5 @@
 geopy
 fastapi
-uvicorn[standard]
-setuptools
-starlette
+uvicorn
+pydantic
+folium
