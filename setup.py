@@ -6,10 +6,10 @@ setup(
     packages=find_packages(),
     install_requires=[
         "geopy",
-        "folium",
         "fastapi",
         "uvicorn",
         "pydantic",
+        "folium",
     ],
     entry_points={
         "console_scripts": [
