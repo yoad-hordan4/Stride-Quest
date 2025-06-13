@@ -1,3 +1,8 @@
+'use strict';
+
+const DEFAULT_LAT = 32.1670;
+const DEFAULT_LON = 34.8045;
+
 let nearbyTrails = [];
 const BASE_URL = `${window.location.origin}`;
 
@@ -26,15 +31,15 @@ function getLocation() {
 }
 
 function showPosition(position) {
-  // Check if position is valid
+  let lat, lon;
+
   if (position && position.coords) {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
   } else {
-    // Display error and use default location
     alert("⚠️ Location not available. Using default location.");
-    lat = 32.1670; // Default latitude currently home
-    lon = 34.8045; // Default longitude currently home
+    lat = DEFAULT_LAT;
+    lon = DEFAULT_LON;
   }
 
   fetch(`${BASE_URL}/trails/nearby`, {
@@ -121,7 +126,10 @@ function startHike(trailId) {
   
     console.log(`🚶‍♂️ Starting hike on: ${currentTrail.name}`);
     console.log(`⏩ Current checkpoint: ${currentTrail.checkpoints[0].title}`);
-  
+
+    // 📍 Show map even before we have a location
+    initMap(DEFAULT_LAT, DEFAULT_LON);
+
     // 📍 Start live tracking
     watcherId = navigator.geolocation.watchPosition(pos => {
       const lat = pos.coords.latitude;
@@ -252,8 +260,19 @@ function playBeep() {
 
 function showError(error) {
   document.getElementById("errorBanner").style.display = "block";
-  document.getElementById("errorBanner").textContent = "⚠️ Location error: " + error.message;
-  showPosition({ coords: { latitude: 32.1670, longitude: 34.8045 } });
+  document.getElementById("errorBanner").textContent =
+    "⚠️ Location error: " + error.message + " Using default location.";
+
+  if (currentTrail) {
+    if (!map) {
+      initMap(DEFAULT_LAT, DEFAULT_LON);
+    }
+    if (userMarker) {
+      userMarker.setLatLng([DEFAULT_LAT, DEFAULT_LON]);
+    }
+  } else {
+    showPosition({ coords: { latitude: DEFAULT_LAT, longitude: DEFAULT_LON } });
+  }
 }
 
 function initMap(lat, lon) {

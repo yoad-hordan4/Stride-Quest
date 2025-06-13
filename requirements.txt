@@ -2,5 +2,4 @@ geopy
 fastapi
 uvicorn
 pydantic
-folium
 gpxpy
