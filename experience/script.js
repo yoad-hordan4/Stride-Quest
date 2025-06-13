@@ -26,9 +26,17 @@ function getLocation() {
 }
 
 function showPosition(position) {
-  const lat = position.coords.latitude;
-  const lon = position.coords.longitude;
-
+  // Check if position is valid
+  if (position && position.coords) {
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+  } else {
+    // Display error and use default location
+    alert("⚠️ Location not available. Using default location.");
+    lat = 32.0853; // Default latitude (e.g., Tel Aviv)
+    lon = 34.7818; // Default longitude (e.g., Tel Aviv)
+  }
+  
   fetch(`${BASE_URL}/trails/nearby`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
