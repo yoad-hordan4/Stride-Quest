@@ -33,10 +33,10 @@ function showPosition(position) {
   } else {
     // Display error and use default location
     alert("⚠️ Location not available. Using default location.");
-    lat = 32.0853; // Default latitude (e.g., Tel Aviv)
-    lon = 34.7818; // Default longitude (e.g., Tel Aviv)
+    lat = 32.1670; // Default latitude currently home
+    lon = 34.8045; // Default longitude currently home
   }
-  
+
   fetch(`${BASE_URL}/trails/nearby`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -247,13 +247,13 @@ function playBeep() {
   osc.frequency.setValueAtTime(880, ctx.currentTime);
   osc.connect(ctx.destination);
   osc.start();
-  osc.stop(ctx.currentTime + 0.2);
+  osc.stop(ctx.currentTime + 0.12);
 }
 
 function showError(error) {
   document.getElementById("errorBanner").style.display = "block";
   document.getElementById("errorBanner").textContent = "⚠️ Location error: " + error.message;
-  showPosition({ coords: { latitude: 32.0853, longitude: 34.7818 } });
+  showPosition({ coords: { latitude: 32.1670, longitude: 34.8045 } });
 }
 
 function initMap(lat, lon) {
