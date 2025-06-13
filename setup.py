@@ -9,12 +9,6 @@ setup(
         "fastapi",
         "uvicorn",
         "pydantic",
-        "folium",
         "gpxpy",
     ],
-    entry_points={
-        "console_scripts": [
-            "yoad=yoad_trip.api.main:main"
-        ]
-    },
 )
