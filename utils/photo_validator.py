@@ -1,6 +1,9 @@
 from pathlib import Path
 import imghdr
 import photo_taker
+import cv2
+
+PATH_TO_IMAGES = Path(__file__).resolve().parent.parent / "experience" / "images" / "sample_img.jpg"
 
 def validate_photo(image_path: str, keyword: str) -> bool:
     """Simple placeholder validation for location photos.
@@ -18,4 +21,19 @@ def validate_photo(image_path: str, keyword: str) -> bool:
 
 def save_photo(): # saves photo to experience/images
     image = photo_taker.take_photo()
-    photo_taker.photo_saver(image, "experience/images/test_photo.jpg")
+    photo_taker.photo_saver(image, PATH_TO_IMAGES)
+
+def show_photo(image):
+    if isinstance(image, str):
+        image = cv2.imread(PATH_TO_IMAGES)  #notice that the images directory is not in this files
+        if image is None:
+            print(f"Failed to load image from path: {image}")
+            return
+    
+    if image is None:
+        print("No image to display")
+        return
+    
+    cv2.imshow("Captured Image", image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

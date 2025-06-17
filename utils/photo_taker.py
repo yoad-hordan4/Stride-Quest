@@ -26,8 +26,7 @@ def display_image(image):
     cv2.waitKey(0)  # Wait for a key press to close the window
     cv2.destroyAllWindows()
     
-def photo_saver(image, filename):
-    """Saves the captured image to a file."""
+"""def photo_saver(image, filename):
     cv2.imwrite(filename, image)
     print(f"Photo saved as {filename}")
-    return filename
+    return filename """
