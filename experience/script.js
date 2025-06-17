@@ -22,6 +22,7 @@ window.checkAnswer = checkAnswer;
 window.nextCheckpoint = nextCheckpoint;
 
 
+
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -296,4 +297,7 @@ function initMap(lat, lon) {
     if (trailLine) trailLine.remove();
     trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
   }
+
+function  take_photo(){
   
+}

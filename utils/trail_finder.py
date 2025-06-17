@@ -4,6 +4,7 @@ import logging
 from pathlib import Path
 from geopy.distance import distance
 import gpxpy
+import cv2
 
 # Constants
 TRAILS_PATH = Path(__file__).resolve().parent.parent / "data" / "sample_trails.json"
@@ -12,6 +13,8 @@ MAX_DIST = 200  # in km, must match frontend expectation
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
+
+
 
 def parse_gpx_file(filename):
     """Parse a GPX file and return a list of points."""

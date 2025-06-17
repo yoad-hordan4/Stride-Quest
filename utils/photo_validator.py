@@ -1,5 +1,6 @@
 from pathlib import Path
 import imghdr
+import photo_taker
 
 def validate_photo(image_path: str, keyword: str) -> bool:
     """Simple placeholder validation for location photos.
@@ -15,3 +16,6 @@ def validate_photo(image_path: str, keyword: str) -> bool:
         return False
     return keyword.lower().replace(" ", "") in path.stem.lower()
 
+def save_photo(): # saves photo to experience/images
+    image = photo_taker.take_photo()
+    photo_taker.photo_saver(image, "experience/images/test_photo.jpg")
