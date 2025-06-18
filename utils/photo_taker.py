@@ -1,32 +1,34 @@
 import cv2
 import time
+from pathlib import Path
+
+# Define where the photo will be saved
+PHOTO_SAVE_PATH = Path(__file__).resolve().parent.parent / "experience" / "images" / "user_photo.jpg"
 
 def take_photo():
     cam = cv2.VideoCapture(0)
     
     if not cam.isOpened():
-        print("Failed to open the camera")
-        return
+        raise RuntimeError("Failed to open the camera")
+
     time.sleep(0.1)
-    # Capture a single frame
     result, image = cam.read()
-    if not result:
-        print("Failed to capture image")
-        return
     cam.release()
+
+    if not result:
+        raise RuntimeError("Failed to capture image")
+
     return image
 
+def photo_saver(image, filename=PHOTO_SAVE_PATH):
+    success = cv2.imwrite(str(filename), image)
+    if not success:
+        raise IOError(f"Failed to save photo to {filename}")
+    print(f"Photo saved to: {filename}")
+    return filename
 
-def retake_photo():
-    print("Retaking photo...")
-    return take_photo()
 
-def display_image(image):
-    cv2.imshow("Captured Image", image)
-    cv2.waitKey(0)  # Wait for a key press to close the window
-    cv2.destroyAllWindows()
-    
-"""def photo_saver(image, filename):
-    cv2.imwrite(filename, image)
-    print(f"Photo saved as {filename}")
-    return filename """
+def taker():
+    image = take_photo()
+    result = photo_saver(image)
+    return result  # Returns a Path object

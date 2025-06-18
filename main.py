@@ -11,7 +11,6 @@ app = FastAPI(
     version="0.1.0"
 )
 
-# ✅ CORS for frontend access
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # restrict in production
@@ -20,16 +19,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ✅ Mount frontend
+# Mount frontend
 experience_dir = Path(__file__).resolve().parent / "experience"
 app.mount("/experience", StaticFiles(directory=experience_dir, html=True), name="experience")
 
-# ✅ API routes
 app.include_router(trails.router, prefix="/trails", tags=["Trails"])
 app.include_router(quizzes.router, prefix="/quizzes", tags=["Quizzes"])
 app.include_router(challenges.router, prefix="/challenges", tags=["Challenges"])
 
-# ✅ Default redirect
+# Automatic redirection to experience
 @app.get("/", include_in_schema=False)
 def home():
     from fastapi.responses import RedirectResponse

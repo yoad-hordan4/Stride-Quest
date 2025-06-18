@@ -296,6 +296,4 @@ function showError(error) {
     trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
   }
 
-function  take_photo(){
-  
 }

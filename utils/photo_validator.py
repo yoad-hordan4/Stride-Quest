@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from pathlib import Path
 import imghdr
 import cv2
-import photo_taker
+import utils.photo_taker as photo_taker
 
 router = APIRouter()
 
