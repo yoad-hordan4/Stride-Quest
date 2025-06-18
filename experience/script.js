@@ -326,8 +326,10 @@ function takePhoto() {
   .then(res => res.json())
   .then(data => {
     if (data.photo_url) {
-      currentPhotoUrl = data.photo_url;
-      displayPhoto(data.photo_url);
+      const cacheBustedUrl = `${data.photo_url}?t=${Date.now()}`;
+      currentPhotoUrl = cacheBustedUrl;
+      displayPhoto(cacheBustedUrl);
+
     } else {
       alert("Failed to take photo.");
     }
