@@ -12,6 +12,7 @@ let currentCheckpoint = null;
 let watcherId = null;
 let map, userMarker, checkpointMarkers = [];
 let trailLine = null;
+let currentPhotoUrl = null;
 
 // ✅ Expose public functions so buttons can call them
 window.getLocation = getLocation;
@@ -22,6 +23,8 @@ window.skipToNextCheckpoint = skipToNextCheckpoint;
 window.checkAnswer = checkAnswer;
 window.nextCheckpoint = nextCheckpoint;
 window.takePhoto = takePhoto;
+window.retakePhoto = retakePhoto;
+window.submitPhoto = submitPhoto;
 
 function getLocation() {
   if (navigator.geolocation) {
@@ -105,6 +108,8 @@ function startHike(trailId) {
     document.getElementById('trailSelectArea').style.display = 'none';
     document.getElementById('exitGame').style.display = 'block';
     document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('photoArea').innerHTML = '';
+    currentPhotoUrl = null;
   
     // 🚨 Clear previous content just in case
     document.getElementById('trailInfo').innerHTML = '';
@@ -155,6 +160,8 @@ function exitGame() {
       document.getElementById('trailSelectArea').style.display = 'none';
       document.getElementById('gameArea').style.display = 'none';
       document.getElementById('exitGame').style.display = 'none';
+      document.getElementById('photoArea').innerHTML = '';
+      currentPhotoUrl = null;
   
       // Clear game state
       document.getElementById('gameArea').innerHTML = '';
@@ -199,7 +206,6 @@ function checkAnswer(selected, correct) {
       <p>${result}</p>
       <p>${currentCheckpoint.challenge.prompt}</p>
       <button onclick="takePhoto()">📸 Take Photo</button>
-      <button onclick="nextCheckpoint()">➡️ Continue</button>
     `;
   } else {
     document.getElementById('checkpointArea').innerHTML = `
@@ -213,6 +219,8 @@ function nextCheckpoint() {
   currentCheckpointIndex++;
   if (currentCheckpointIndex >= currentTrail.checkpoints.length) {
     document.getElementById('checkpointArea').innerHTML = `<h3>🎉 Trail Complete!</h3>`;
+    document.getElementById('photoArea').innerHTML = '';
+    currentPhotoUrl = null;
     return;
   }
 
@@ -221,6 +229,8 @@ function nextCheckpoint() {
     <p><strong>Next checkpoint:</strong> ${cp.title}</p>
     <button onclick="skipToNextCheckpoint()">🚀 Skip to next (dev only)</button>
   `;
+  document.getElementById('photoArea').innerHTML = '';
+  currentPhotoUrl = null;
 
   watcherId = navigator.geolocation.watchPosition(pos => {
     const lat = pos.coords.latitude;
@@ -316,7 +326,9 @@ function takePhoto() {
   .then(res => res.json())
   .then(data => {
     if (data.photo_url) {
-      displayPhoto(data.photo_url);
+      const cacheBustedUrl = `${data.photo_url}?t=${Date.now()}`;
+      currentPhotoUrl = cacheBustedUrl;
+      displayPhoto(cacheBustedUrl);
     } else {
       alert("Failed to take photo.");
     }
@@ -331,5 +343,44 @@ function displayPhoto(photoUrl) {
   const photoArea = document.getElementById('photoArea');
   photoArea.innerHTML = `
     <img src="${photoUrl}" alt="Captured Photo" style="width:50%; border-radius:8px; margin-top:1rem;">
+    <div style="margin-top:1rem;">
+      <button onclick="retakePhoto()">🔄 Retake</button>
+      <button onclick="submitPhoto()">✅ Submit</button>
+    </div>
   `;
 }
+
+function retakePhoto() {
+  takePhoto();
+}
+
+function submitPhoto() {
+  if (!currentPhotoUrl || !currentCheckpoint?.challenge?.keyword) return;
+  fetch(currentPhotoUrl)
+    .then(res => res.blob())
+    .then(blob => {
+      const fd = new FormData();
+      fd.append('image', new File([blob], 'photo.jpg', { type: blob.type }));
+      fd.append('keyword', currentCheckpoint.challenge.keyword);
+      return fetch(`${BASE_URL}/challenges/validate`, {
+        method: 'POST',
+        body: fd
+      });
+    })
+    .then(res => res.json())
+    .then(data => {
+      const photoArea = document.getElementById('photoArea');
+      if (data.valid) {
+        photoArea.innerHTML += '<p>✅ Photo accepted!</p>';
+        document.getElementById('checkpointArea').innerHTML = `
+          <button onclick="nextCheckpoint()">➡️ Continue</button>
+        `;
+      } else {
+        photoArea.innerHTML += '<p>❌ Photo did not match. Try again.</p>';
+      }
+    })
+    .catch(err => {
+      console.error('Error submitting photo:', err);
+    });
+}
+
