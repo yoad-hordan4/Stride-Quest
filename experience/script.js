@@ -371,14 +371,15 @@ function submitPhoto() {
     .then(res => res.json())
     .then(data => {
       const photoArea = document.getElementById('photoArea');
+      const percent = Math.round((data.score || 0) * 100);
       if (data.valid) {
-        photoArea.innerHTML += '<p>✅ Photo accepted!</p>';
-        document.getElementById('checkpointArea').innerHTML = `
-          <button onclick="nextCheckpoint()">➡️ Continue</button>
-        `;
+        photoArea.innerHTML += `<p>✅ Photo accepted! Score: ${percent}%</p>`;
       } else {
-        photoArea.innerHTML += '<p>❌ Photo did not match. Try again.</p>';
+        photoArea.innerHTML += `<p>❌ Photo did not match (score ${percent}%).</p>`;
       }
+      document.getElementById('checkpointArea').innerHTML = `
+        <button onclick="nextCheckpoint()">➡️ Continue</button>
+      `;
     })
     .catch(err => {
       console.error('Error submitting photo:', err);

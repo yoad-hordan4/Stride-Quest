@@ -10,5 +10,6 @@ setup(
         "uvicorn",
         "pydantic",
         "gpxpy",
+        "opencv-python",
     ],
 )
