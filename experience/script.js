@@ -329,6 +329,7 @@ function takePhoto() {
       const cacheBustedUrl = `${data.photo_url}?t=${Date.now()}`;
       currentPhotoUrl = cacheBustedUrl;
       displayPhoto(cacheBustedUrl);
+
     } else {
       alert("Failed to take photo.");
     }
