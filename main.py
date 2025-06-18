@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from routes import quizzes, trails
 from routes import challenges
 from pathlib import Path
+import utils.photo_taker as photo_taker
 
 app = FastAPI(
     title="StrideQuest API",
@@ -32,3 +34,10 @@ app.include_router(challenges.router, prefix="/challenges", tags=["Challenges"])
 def home():
     from fastapi.responses import RedirectResponse
     return RedirectResponse(url="/experience/")
+
+
+@app.get("/", response_class=HTMLResponse, include_in_schema=False)
+def photo():
+    result_path = photo_taker.taker()
+    relative_url = "/images/" + result_path.name
+    return {"photo_url": relative_url}

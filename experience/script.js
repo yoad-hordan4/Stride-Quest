@@ -296,4 +296,30 @@ function showError(error) {
     trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
   }
 
+  function takePhoto() {
+    fetch(`${BASE_URL}/take-photo`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.photo_url) {
+        displayPhoto(data.photo_url);
+      } else {
+        alert("Failed to take photo.");
+      }
+    })
+    .catch(error => {
+      console.error("Error taking photo:", error);
+      alert("An error occurred while taking the photo.");
+    });
+  }
+  
+  function displayPhoto(photoUrl) {
+    const photoArea = document.getElementById('photoArea');
+    photoArea.innerHTML = `
+      <img src="${photoUrl}" alt="Captured Photo" style="width:50%; border-radius:8px; margin-top:1rem;">
+    `;
+  }
+
 }
