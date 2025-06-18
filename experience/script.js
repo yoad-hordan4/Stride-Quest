@@ -20,8 +20,7 @@ window.exitGame = exitGame;
 window.skipToNextCheckpoint = skipToNextCheckpoint;
 window.checkAnswer = checkAnswer;
 window.nextCheckpoint = nextCheckpoint;
-
-
+window.takePhoto = takePhoto;
 
 function getLocation() {
   if (navigator.geolocation) {
@@ -274,9 +273,8 @@ function showError(error) {
   } else {
     showPosition({ coords: { latitude: DEFAULT_LAT, longitude: DEFAULT_LON } });
   }
-}
 
-function initMap(lat, lon) {
+  function initMap(lat, lon) {
     if (map) {
       map.remove(); // ✅ destroy previous map instance
     }
@@ -298,6 +296,54 @@ function initMap(lat, lon) {
     trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
   }
 
-function  take_photo(){
+  function takePhoto() {
+    fetch(`${BASE_URL}/take-photo`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        const photoPath = data.photo_path;
+        displayPhoto(photoPath);
+      } else {
+        alert(data.message);
+      }
+    })
+    .catch(error => {
+      console.error("Error taking photo:", error);
+      alert("Failed to take photo.");
+    });
+  }
+  
+  function displayPhoto(photoPath) {
+    const photoArea = document.getElementById('photoArea');
+    photoArea.innerHTML = `
+      <img src="${photoPath}" alt="Captured Photo" style="width:100%; border-radius:8px; margin-top:1rem;">
+      <button onclick="validatePhoto()">✅ Confirm Photo</button>
+      <button onclick="takePhoto()">❌ Retake Photo</button>
+    `;
+  }
+  
+  function validatePhoto() {
+    const keyword = prompt("Enter a keyword to validate the photo:");
+    fetch(`${BASE_URL}/validate-photo`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ keyword })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Photo validated successfully!");
+      } else {
+        alert("Photo validation failed.");
+      }
+    })
+    .catch(error => {
+      console.error("Error validating photo:", error);
+      alert("Failed to validate photo.");
+    });
+  }
   
 }

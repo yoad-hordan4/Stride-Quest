@@ -1,39 +1,25 @@
+from fastapi import APIRouter
 from pathlib import Path
 import imghdr
-import photo_taker
 import cv2
+from utils.photo_taker import take_photo
+from utils.photo_validator import validate_photo
 
-PATH_TO_IMAGES = Path(__file__).resolve().parent.parent / "experience" / "images" / "sample_img.jpg"
+router = APIRouter()
 
-def validate_photo(image_path: str, keyword: str) -> bool:
-    """Simple placeholder validation for location photos.
+PHOTO_SAVE_PATH = Path(__file__).resolve().parent.parent / "experience" / "images" / "user_photo.jpg"
 
-    Checks that the image exists, is a valid image type, and that the
-    filename contains the expected keyword. A real implementation
-    would use computer vision to match the scenery.
-    """
-    path = Path(image_path)
-    if not path.exists():
-        return False
-    if imghdr.what(path) is None:
-        return False
-    return keyword.lower().replace(" ", "") in path.stem.lower()
-
-def save_photo(): # saves photo to experience/images
-    image = photo_taker.take_photo()
-    photo_taker.photo_saver(image, PATH_TO_IMAGES)
-
-def show_photo(image):
-    if isinstance(image, str):
-        image = cv2.imread(PATH_TO_IMAGES)  #notice that the images directory is not in this files
-        if image is None:
-            print(f"Failed to load image from path: {image}")
-            return
-    
+@router.post("/take-photo")
+def take_and_save_photo():
+    image = take_photo()
     if image is None:
-        print("No image to display")
-        return
+        return {"success": False, "message": "Failed to take photo"}
     
-    cv2.imshow("Captured Image", image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # Save the photo
+    cv2.imwrite(str(PHOTO_SAVE_PATH), image)
+    return {"success": True, "message": "Photo taken successfully", "photo_path": str(PHOTO_SAVE_PATH)}
+
+@router.post("/validate-photo")
+def validate_user_photo(keyword: str):
+    is_valid = validate_photo(str(PHOTO_SAVE_PATH), keyword)
+    return {"success": is_valid, "message": "Photo validation complete"}
