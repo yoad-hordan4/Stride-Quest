@@ -8,6 +8,7 @@ const BASE_URL = `${window.location.origin}`;
 
 let currentCheckpointIndex = 0;
 let currentTrail = null;
+let currentCheckpoint = null;
 let watcherId = null;
 let map, userMarker, checkpointMarkers = [];
 let trailLine = null;
@@ -176,6 +177,7 @@ function handlePositionUpdate(position) {
 }
 
 function triggerCheckpoint(cp) {
+  currentCheckpoint = cp;
   updateProgress();
   playBeep();
   if ("vibrate" in navigator) navigator.vibrate(300);
@@ -192,10 +194,19 @@ function checkAnswer(selected, correct) {
     ? "✅ Correct! Great job."
     : `❌ Oops! The correct answer was: ${correct}`;
 
-  document.getElementById('checkpointArea').innerHTML = `
-    <p>${result}</p>
-    <button onclick="nextCheckpoint()">➡️ Continue</button>
-  `;
+  if (currentCheckpoint?.challenge?.type === 'photo') {
+    document.getElementById('checkpointArea').innerHTML = `
+      <p>${result}</p>
+      <p>${currentCheckpoint.challenge.prompt}</p>
+      <button onclick="takePhoto()">📸 Take Photo</button>
+      <button onclick="nextCheckpoint()">➡️ Continue</button>
+    `;
+  } else {
+    document.getElementById('checkpointArea').innerHTML = `
+      <p>${result}</p>
+      <button onclick="nextCheckpoint()">➡️ Continue</button>
+    `;
+  }
 }
 
 function nextCheckpoint() {
@@ -273,53 +284,52 @@ function showError(error) {
   } else {
     showPosition({ coords: { latitude: DEFAULT_LAT, longitude: DEFAULT_LON } });
   }
+}
 
-  function initMap(lat, lon) {
-    if (map) {
-      map.remove(); // ✅ destroy previous map instance
+function initMap(lat, lon) {
+  if (map) {
+    map.remove(); // ✅ destroy previous map instance
+  }
+
+  map = L.map('map').setView([lat, lon], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  userMarker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
+  checkpointMarkers = currentTrail.checkpoints.map(cp =>
+    L.marker([cp.lat, cp.lon]).addTo(map).bindPopup(cp.title)
+  );
+
+  const points = (currentTrail.gpx_points && currentTrail.gpx_points.length)
+    ? currentTrail.gpx_points.map(p => [p.lat, p.lon])
+    : currentTrail.checkpoints.map(cp => [cp.lat, cp.lon]);
+  if (trailLine) trailLine.remove();
+  trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
+}
+
+function takePhoto() {
+  fetch(`${BASE_URL}/take-photo`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.photo_url) {
+      displayPhoto(data.photo_url);
+    } else {
+      alert("Failed to take photo.");
     }
+  })
+  .catch(error => {
+    console.error("Error taking photo:", error);
+    alert("An error occurred while taking the photo.");
+  });
+}
 
-    map = L.map('map').setView([lat, lon], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    userMarker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
-    checkpointMarkers = currentTrail.checkpoints.map(cp =>
-      L.marker([cp.lat, cp.lon]).addTo(map).bindPopup(cp.title)
-    );
-
-    const points = (currentTrail.gpx_points && currentTrail.gpx_points.length)
-      ? currentTrail.gpx_points.map(p => [p.lat, p.lon])
-      : currentTrail.checkpoints.map(cp => [cp.lat, cp.lon]);
-    if (trailLine) trailLine.remove();
-    trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
-  }
-
-  function takePhoto() {
-    fetch(`${BASE_URL}/take-photo`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.photo_url) {
-        displayPhoto(data.photo_url);
-      } else {
-        alert("Failed to take photo.");
-      }
-    })
-    .catch(error => {
-      console.error("Error taking photo:", error);
-      alert("An error occurred while taking the photo.");
-    });
-  }
-  
-  function displayPhoto(photoUrl) {
-    const photoArea = document.getElementById('photoArea');
-    photoArea.innerHTML = `
-      <img src="${photoUrl}" alt="Captured Photo" style="width:50%; border-radius:8px; margin-top:1rem;">
-    `;
-  }
-
+function displayPhoto(photoUrl) {
+  const photoArea = document.getElementById('photoArea');
+  photoArea.innerHTML = `
+    <img src="${photoUrl}" alt="Captured Photo" style="width:50%; border-radius:8px; margin-top:1rem;">
+  `;
 }

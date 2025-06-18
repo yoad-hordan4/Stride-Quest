@@ -32,12 +32,14 @@ app.include_router(challenges.router, prefix="/challenges", tags=["Challenges"])
 # Automatic redirection to experience
 @app.get("/", include_in_schema=False)
 def home():
+    """Redirect the root URL to the frontend experience."""
     from fastapi.responses import RedirectResponse
     return RedirectResponse(url="/experience/")
 
 
-@app.get("/", response_class=HTMLResponse, include_in_schema=False)
-def photo():
+@app.post("/take-photo")
+def take_photo():
+    """Capture a photo using the webcam and return its URL."""
     result_path = photo_taker.taker()
-    relative_url = "/images/" + result_path.name
+    relative_url = "/experience/images/" + result_path.name
     return {"photo_url": relative_url}
