@@ -33,6 +33,27 @@ def parse_gpx_file(filename):
                 points.append({"lat": p.latitude, "lon": p.longitude})
     return points
 
+def snap_checkpoints_to_trail(checkpoints, gpx_points):
+    """Move checkpoint coordinates to the nearest point on the GPX track."""
+    if not checkpoints or not gpx_points:
+        return checkpoints
+
+    snapped = []
+    for cp in checkpoints:
+        cp_lat = cp.get("lat")
+        cp_lon = cp.get("lon")
+        if cp_lat is None or cp_lon is None:
+            snapped.append(cp)
+            continue
+
+        nearest_pt = min(
+            gpx_points,
+            key=lambda p: distance((cp_lat, cp_lon), (p["lat"], p["lon"])).m,
+        )
+        cp["lat"], cp["lon"] = nearest_pt["lat"], nearest_pt["lon"]
+        snapped.append(cp)
+    return snapped
+
 def validate_coordinates(lat, lon):
     return -90 <= lat <= 90 and -180 <= lon <= 180
 
@@ -63,6 +84,9 @@ def find_nearby_trails(user_lat, user_lon, radius_km=MAX_DIST):
             trail_copy["distance_km"] = round(dist_km, 2)
             if trail_copy.get("gpx_file"):
                 trail_copy["gpx_points"] = parse_gpx_file(trail_copy["gpx_file"])
+                trail_copy["checkpoints"] = snap_checkpoints_to_trail(
+                    trail_copy.get("checkpoints"), trail_copy["gpx_points"]
+                )
             nearby.append(trail_copy)
 
     logging.info(f"User at ({user_lat}, {user_lon}) — Found {len(nearby)} nearby trails.")
@@ -84,6 +108,9 @@ def get_trail_by_id(trail_id: int):
         if trail.get("id") == trail_id:
             if trail.get("gpx_file"):
                 trail["gpx_points"] = parse_gpx_file(trail["gpx_file"])
+                trail["checkpoints"] = snap_checkpoints_to_trail(
+                    trail.get("checkpoints"), trail["gpx_points"]
+                )
             return trail
 
     logging.warning(f"Trail with ID {trail_id} not found.")
