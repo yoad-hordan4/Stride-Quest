@@ -10,6 +10,7 @@ let currentCheckpointIndex = 0;
 let currentTrail = null;
 let currentCheckpoint = null;
 let watcherId = null;
+let locationIntervalId = null;
 let map, userMarker, checkpointMarkers = [];
 let trailLine = null;
 let currentPhotoUrl = null;
@@ -148,7 +149,18 @@ function startHike(trailId) {
       maximumAge: 1000,
       timeout: 10000
     });
-  
+
+    if (locationIntervalId) clearInterval(locationIntervalId);
+    locationIntervalId = setInterval(() => {
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        if (!map) initMap(lat, lon);
+        else userMarker.setLatLng([lat, lon]);
+        handlePositionUpdate(pos);
+      }, showError, { enableHighAccuracy: true });
+    }, 5000);
+
     updateProgress();
 }
   
@@ -171,6 +183,10 @@ function exitGame() {
       if (watcherId) {
         navigator.geolocation.clearWatch(watcherId);
       }
+      if (locationIntervalId) {
+        clearInterval(locationIntervalId);
+        locationIntervalId = null;
+      }
     }
 }
   
@@ -189,6 +205,10 @@ function triggerCheckpoint(cp) {
   playBeep();
   if ("vibrate" in navigator) navigator.vibrate(300);
   navigator.geolocation.clearWatch(watcherId);
+  if (locationIntervalId) {
+    clearInterval(locationIntervalId);
+    locationIntervalId = null;
+  }
   document.getElementById('checkpointArea').innerHTML = `
     <h3>📍 ${cp.title}</h3>
     <p><strong>Quiz:</strong> ${cp.quiz.question}</p>
@@ -232,6 +252,7 @@ function nextCheckpoint() {
   document.getElementById('photoArea').innerHTML = '';
   currentPhotoUrl = null;
 
+  if (watcherId) navigator.geolocation.clearWatch(watcherId);
   watcherId = navigator.geolocation.watchPosition(pos => {
     const lat = pos.coords.latitude;
     const lon = pos.coords.longitude;
@@ -239,6 +260,17 @@ function nextCheckpoint() {
     else userMarker.setLatLng([lat, lon]);
     handlePositionUpdate(pos);
   }, showError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
+
+  if (locationIntervalId) clearInterval(locationIntervalId);
+  locationIntervalId = setInterval(() => {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      if (!map) initMap(lat, lon);
+      else userMarker.setLatLng([lat, lon]);
+      handlePositionUpdate(pos);
+    }, showError, { enableHighAccuracy: true });
+  }, 5000);
 
   updateProgress();
 }
@@ -271,12 +303,18 @@ function toRad(value) {
 
 function playBeep() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const osc = ctx.createOscillator();
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(880, ctx.currentTime);
-  osc.connect(ctx.destination);
-  osc.start();
-  osc.stop(ctx.currentTime + 0.12);
+  const tone = (freq, start, len) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(ctx.currentTime + start);
+    osc.stop(ctx.currentTime + start + len);
+  };
+  tone(660, 0, 0.15);
+  tone(880, 0.15, 0.15);
 }
 
 function showError(error) {
