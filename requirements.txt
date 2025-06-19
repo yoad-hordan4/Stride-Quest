@@ -1,12 +1,9 @@
-geopy
 fastapi
 uvicorn
 pydantic
+geopy
 gpxpy
 opencv-python
-standard-imghdr
-time
-pathlib
-geopy
 numpy
-leaflet.js
+starlette
+anyio
