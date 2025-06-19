@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="Wikiloc - https://www.wikiloc.com" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Wikiloc - Herzlyia Walk</name>
+    <author>
+      <name>yoad hordan</name>
+      <link href="https://www.wikiloc.com/wikiloc/user.do?id=18567051">
+        <text>yoad hordan on Wikiloc</text>
+      </link>
+    </author>
+    <link href="https://www.wikiloc.com/walking-trails/herzlyia-walk-218658627">
+      <text>Herzlyia Walk on Wikiloc</text>
+    </link>
+    <time>2025-06-19T14:16:47.412Z</time>
+  </metadata>
+  <trk>
+    <name>Herzlyia Walk</name>
+    <cmt>Walking down the street</cmt>
+    <desc>Walking down the street</desc>
+    <trkseg>
+      <trkpt lat="32.167091" lon="34.804602">
+        <ele>21.665</ele>
+        <time>2025-06-19T14:17:52.974599538Z</time>
+      </trkpt>
+      <trkpt lat="32.166397" lon="34.803921">
+        <ele>22.768</ele>
+        <time>2025-06-19T14:18:12.974604938Z</time>
+      </trkpt>
+      <trkpt lat="32.166906" lon="34.803895">
+        <ele>22.014</ele>
+        <time>2025-06-19T14:18:32.974610138Z</time>
+      </trkpt>
+      <trkpt lat="32.166433" lon="34.803927">
+        <ele>22.609</ele>
+        <time>2025-06-19T14:18:52.974615037Z</time>
+      </trkpt>
+      <trkpt lat="32.166899" lon="34.803900">
+        <ele>22.078</ele>
+        <time>2025-06-19T14:19:12.974619966Z</time>
+      </trkpt>
+    </trkseg>
+  </trk></gpx>

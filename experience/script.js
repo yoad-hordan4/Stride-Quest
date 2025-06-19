@@ -303,19 +303,33 @@ function toRad(value) {
 
 function playBeep() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const tone = (freq, start, len) => {
+
+  const playNote = (freq, start, duration, vol = 0.1) => {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    osc.type = "sine";
+
+    osc.type = "triangle"; // Smooth tone
     osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+
+    // Soft fade in/out
+    gain.gain.setValueAtTime(0, ctx.currentTime + start);
+    gain.gain.linearRampToValueAtTime(vol, ctx.currentTime + start + 0.02);
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + start + duration);
+
     osc.connect(gain);
     gain.connect(ctx.destination);
     osc.start(ctx.currentTime + start);
-    osc.stop(ctx.currentTime + start + len);
+    osc.stop(ctx.currentTime + start + duration);
   };
-  tone(660, 0, 0.15);
-  tone(880, 0.15, 0.15);
+
+  // Melody: C5 (523), D5 (587), G5 (784)
+  playNote(523.25, 0, 0.2);     // C5
+  playNote(587.33, 0.25, 0.2);   // D5
+  playNote(783.99, 0.5, 0.25);    // G5
 }
+
+
+
 
 function showError(error) {
   document.getElementById("errorBanner").style.display = "block";

@@ -463,5 +463,99 @@
           }
         }
       ]
+  },
+  {
+    "id" : 6,
+    "name": "HouseWalk",
+    "latitude": 32.1670,
+    "longitude": 34.8046,
+    "length_km": 0.26,
+    "closest_city": "Herzliya",
+    "image_url": "/experience/images/default-stridequest.jpg",
+    "gpx_file": "herzlyia-walk.gpx",
+    "history": "HouseWalk is a unique trail in Herzliya.",
+    "checkpoints": [
+      {
+        "lat": 32.1670,
+        "lon": 34.8046,
+        "title": "HouseWalk Start",
+        "quiz": {
+          "question": "What is the main feature of HouseWalk?",
+          "options": [
+            "Historical buildings",
+            "Modern architecture",
+            "Natural landscapes",
+            "Cultural monuments"
+          ],
+          "answer": "Modern architecture"
+        },
+        "challenge": {
+          "type": "photo",
+          "keyword": "start",
+          "prompt": "Take a photo of the HouseWalk sign."
+        }
+      },
+      {
+        "lat": 32.1671,
+        "lon": 34.8047,
+        "title": "Architectural Marvel",
+        "quiz": {
+          "question": "Which style is prominent in this area?",
+          "options": [
+            "Gothic",
+            "Modernist",
+            "Baroque",
+            "Renaissance"
+          ],
+          "answer": "Modernist"
+        }
+      },
+      {
+        "lat": 32.1663,
+        "lon": 34.8039,
+        "title": "Cultural Hub",
+        "quiz": {
+          "question": "What type of events are commonly held here?",
+          "options": [
+            "Music concerts",
+            "Art exhibitions",
+            "Food festivals",
+            "Sports events"
+          ],
+          "answer": "Art exhibitions"
+        }
+      },
+      {
+        "lat": 32.1667,
+        "lon": 34.8038,
+        "title": "Community Spot",
+        "quiz": {
+          "question": "What is a popular activity in this area?",
+          "options": [
+            "Jogging",
+            "Shopping",
+            "Dining out",
+            "Cycling"
+          ],
+          "answer": "Dining out"
+        }
+      },
+      {
+        "lat": 32.1674,
+        "lon": 34.8050,
+        "title": "HouseWalk End",
+        "quiz": {
+          "question": "What is the significance of HouseWalk?",
+          "options": [
+            "Historical significance",
+            "Architectural innovation",
+            "Cultural diversity",
+            "Natural beauty"
+          ],
+          "answer": "Architectural innovation"
+        }
+      }
+    ]
+
   }
 ]

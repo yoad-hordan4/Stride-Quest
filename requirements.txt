@@ -4,3 +4,9 @@ uvicorn
 pydantic
 gpxpy
 opencv-python
+imghdr
+time
+pathlib
+geopy
+numpy
+leaflet.js
