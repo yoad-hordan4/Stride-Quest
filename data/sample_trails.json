@@ -11,8 +11,8 @@
     "history": "Park Hayarkon was once a seasonal swamp before being transformed into Tel Aviv's largest green space.",
     "checkpoints": [
       {
-        "lat": 32.0965,
-        "lon": 34.805,
+        "lat": 32.097328,
+        "lon": 34.793244,
         "title": "Yarkon Springs",
         "quiz": {
           "question": "What natural feature used to dominate this area?",
@@ -31,8 +31,8 @@
         }
       },
       {
-        "lat": 32.097,
-        "lon": 34.806,
+        "lat": 32.095733,
+        "lon": 34.778732,
         "title": "Bicycle Bridge",
         "quiz": {
           "question": "Which mode of transport is this bridge primarily designed for?",
@@ -46,8 +46,8 @@
         }
       },
       {
-        "lat": 32.0975,
-        "lon": 34.807,
+        "lat": 32.09802,
+        "lon": 34.777602,
         "title": "Picnic Grove",
         "quiz": {
           "question": "What activity is common in this area?",
@@ -61,8 +61,8 @@
         }
       },
       {
-        "lat": 32.098,
-        "lon": 34.808,
+        "lat": 32.096863,
+        "lon": 34.783183,
         "title": "Birdwatch Point",
         "quiz": {
           "question": "Which of these birds is often seen here?",
@@ -76,8 +76,8 @@
         }
       },
       {
-        "lat": 32.0985,
-        "lon": 34.809,
+        "lat": 32.098652,
+        "lon": 34.795573,
         "title": "Riverside Exit",
         "quiz": {
           "question": "Where does this trail lead you back to?",
@@ -104,8 +104,8 @@
     "history": "This trail runs alongside an ancient Roman aqueduct that once supplied water to the city of Caesarea, built by Herod the Great.",
     "checkpoints": [
       {
-        "lat": 32.5086,
-        "lon": 34.892,
+        "lat": 32.523149,
+        "lon": 34.898669,
         "title": "Roman Aqueduct",
         "quiz": {
           "question": "Who built the city of Caesarea?",
@@ -124,8 +124,8 @@
         }
       },
       {
-        "lat": 32.5078,
-        "lon": 34.8925,
+        "lat": 32.530525,
+        "lon": 34.901126,
         "title": "Ancient Harbor",
         "quiz": {
           "question": "What empire built the original harbor here?",
@@ -139,8 +139,8 @@
         }
       },
       {
-        "lat": 32.5069,
-        "lon": 34.8929,
+        "lat": 32.537635,
+        "lon": 34.901613,
         "title": "Crusader Gate",
         "quiz": {
           "question": "In which era was this gate constructed?",
@@ -154,8 +154,8 @@
         }
       },
       {
-        "lat": 32.5061,
-        "lon": 34.8933,
+        "lat": 32.532269,
+        "lon": 34.900966,
         "title": "Museum Plaza",
         "quiz": {
           "question": "What type of museum is nearby?",
@@ -169,8 +169,8 @@
         }
       },
       {
-        "lat": 32.5053,
-        "lon": 34.8937,
+        "lat": 32.523366,
+        "lon": 34.898675,
         "title": "Beach Lookout",
         "quiz": {
           "question": "What sea are you overlooking?",
@@ -197,8 +197,8 @@
     "history": "The Snake Path is a historical ascent to Masada, where Jewish rebels made a final stand against Rome in 73 CE.",
     "checkpoints": [
       {
-        "lat": 31.316,
-        "lon": 35.3535,
+        "lat": 31.31341,
+        "lon": 35.361951,
         "title": "Snake Path Viewpoint",
         "quiz": {
           "question": "When did the siege of Masada take place?",
@@ -217,8 +217,8 @@
         }
       },
       {
-        "lat": 31.3163,
-        "lon": 35.3538,
+        "lat": 31.313521,
+        "lon": 35.358985,
         "title": "Eastern Rampart",
         "quiz": {
           "question": "Which group fortified Masada?",
@@ -232,8 +232,8 @@
         }
       },
       {
-        "lat": 31.3166,
-        "lon": 35.3541,
+        "lat": 31.314953,
+        "lon": 35.358766,
         "title": "Northern Palace",
         "quiz": {
           "question": "Who built the Northern Palace?",
@@ -247,8 +247,8 @@
         }
       },
       {
-        "lat": 31.3169,
-        "lon": 35.3544,
+        "lat": 31.315928,
+        "lon": 35.35676,
         "title": "Water Cisterns",
         "quiz": {
           "question": "What resource was stored here?",
@@ -262,8 +262,8 @@
         }
       },
       {
-        "lat": 31.3172,
-        "lon": 35.3547,
+        "lat": 31.316485,
+        "lon": 35.3556,
         "title": "Summit Fortress",
         "quiz": {
           "question": "What was Masada primarily used for?",
@@ -290,8 +290,8 @@
     "history": "The Tel Aviv Port was once Israel's main gateway for maritime trade and is now a recreational hub with deep historical roots.",
     "checkpoints": [
       {
-        "lat": 32.0962,
-        "lon": 34.774,
+        "lat": 32.099011,
+        "lon": 34.773031,
         "title": "Old Port Warehouse",
         "quiz": {
           "question": "What was the original function of the Tel Aviv Port?",
@@ -310,8 +310,8 @@
         }
       },
       {
-        "lat": 32.0966,
-        "lon": 34.7744,
+        "lat": 32.094551,
+        "lon": 34.772554,
         "title": "Hangar 11",
         "quiz": {
           "question": "What is Hangar 11 now used for?",
@@ -325,8 +325,8 @@
         }
       },
       {
-        "lat": 32.097,
-        "lon": 34.7748,
+        "lat": 32.087804,
+        "lon": 34.769449,
         "title": "Promenade Start",
         "quiz": {
           "question": "Which recreational activity is popular here?",
@@ -340,8 +340,8 @@
         }
       },
       {
-        "lat": 32.0974,
-        "lon": 34.7752,
+        "lat": 32.090042,
+        "lon": 34.77008,
         "title": "Lighthouse Point",
         "quiz": {
           "question": "What structure once guided ships here?",
@@ -355,8 +355,8 @@
         }
       },
       {
-        "lat": 32.0978,
-        "lon": 34.7756,
+        "lat": 32.097116,
+        "lon": 34.774043,
         "title": "Farmers Market",
         "quiz": {
           "question": "What can you buy here weekly?",
