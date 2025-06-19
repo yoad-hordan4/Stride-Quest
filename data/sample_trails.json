@@ -381,87 +381,87 @@
     "image_url": "/experience/images/HodHaSharonPark.jpg",
     "gpx_file": "hod-hasharon-park.gpx",
     "history": "Once a swamp and city landfill, this transformed park now offers scenic hiking trails through eucalyptus groves and around an ecological lake. Enjoy wildlife sightings, educational signs, and panoramic views from the repurposed hilltop.",
-    "checkpoints": [
-      {
-        "lat": 32.1327, 
-        "lon": 34.8915,
-        "title": "Yarkon Springs",
-        "quiz": {
-          "question": "What natural feature used to dominate this area?",
-          "options": [
-            "Forest",
-            "Swamp",
-            "Desert",
-            "Lake"
-          ],
-          "answer": "Swamp"
+      "checkpoints": [
+        {
+          "lat": 32.132618,
+          "lon": 34.892177,
+          "title": "Park Entrance",
+          "quiz": {
+            "question": "What stood here before the park was created?",
+            "options": [
+              "Shopping mall",
+              "Landfill",
+              "Palace",
+              "Factory"
+            ],
+            "answer": "Landfill"
+          },
+          "challenge": {
+            "type": "photo",
+            "keyword": "entrance",
+            "prompt": "Snap a photo of the entrance sign."
+          }
         },
-        "challenge": {
-          "type": "photo",
-          "keyword": "springs",
-          "prompt": "Take a photo of the Yarkon Springs and add a short summary."
+        {
+          "lat": 32.132775,
+          "lon": 34.889465,
+          "title": "Lake View",
+          "quiz": {
+            "question": "Which feature borders this path?",
+            "options": [
+              "Desert",
+              "Ecological lake",
+              "Skyscrapers",
+              "Train station"
+            ],
+            "answer": "Ecological lake"
+          }
+        },
+        {
+          "lat": 32.132868,
+          "lon": 34.888259,
+          "title": "Eucalyptus Grove",
+          "quiz": {
+            "question": "Which trees are plentiful in this area?",
+            "options": [
+              "Pine",
+              "Eucalyptus",
+              "Maple",
+              "Palm"
+            ],
+            "answer": "Eucalyptus"
+          }
+        },
+        {
+          "lat": 32.132557,
+          "lon": 34.887048,
+          "title": "Hilltop Lookout",
+          "quiz": {
+            "question": "What can you see from this hilltop?",
+            "options": [
+              "Snowy peaks",
+              "Panoramic park views",
+              "Beachfront",
+              "Shopping mall"
+            ],
+            "answer": "Panoramic park views"
+          }
+        },
+        {
+          "lat": 32.132639,
+          "lon": 34.892163,
+          "title": "Return Gate",
+          "quiz": {
+            "question": "What does this gate lead back to?",
+            "options": [
+              "Museum",
+              "Park entrance",
+              "Zoo",
+              "Castle"
+            ],
+            "answer": "Park entrance"
+          }
         }
-      },
-      {
-        "lat": 32.095733,
-        "lon": 34.778732,
-        "title": "Bicycle Bridge",
-        "quiz": {
-          "question": "Which mode of transport is this bridge primarily designed for?",
-          "options": [
-            "Cars",
-            "Trains",
-            "Bicycles",
-            "Pedestrians"
-          ],
-          "answer": "Bicycles"
-        }
-      },
-      {
-        "lat": 32.09802,
-        "lon": 34.777602,
-        "title": "Picnic Grove",
-        "quiz": {
-          "question": "What activity is common in this area?",
-          "options": [
-            "Camping",
-            "Surfing",
-            "Picnicking",
-            "Skiing"
-          ],
-          "answer": "Picnicking"
-        }
-      },
-      {
-        "lat": 32.096863,
-        "lon": 34.783183,
-        "title": "Birdwatch Point",
-        "quiz": {
-          "question": "Which of these birds is often seen here?",
-          "options": [
-            "Eagle",
-            "Seagull",
-            "Pelican",
-            "Sparrow"
-          ],
-          "answer": "Sparrow"
-        }
-      },
-      {
-        "lat": 32.098652,
-        "lon": 34.795573,
-        "title": "Riverside Exit",
-        "quiz": {
-          "question": "Where does this trail lead you back to?",
-          "options": [
-            "City Center",
-            "Riverside",
-            "Mountain Top",
-            "Desert"
-          ],
-          "answer": "Riverside"
-        }
-      }
-    ]
+      ]
   }
 ]
