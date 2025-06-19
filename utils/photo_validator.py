@@ -1,6 +1,7 @@
 from pathlib import Path
-import imghdr
 from typing import Optional
+
+from PIL import Image, UnidentifiedImageError
 
 import cv2
 
@@ -26,7 +27,10 @@ def validate_photo(image_path: str, keyword: str) -> bool:
     path = Path(image_path)
     if not path.exists():
         return False
-    if imghdr.what(path) is None:
+    try:
+        with Image.open(path) as img:
+            img.verify()
+    except (UnidentifiedImageError, OSError):
         return False
     return keyword.lower().replace(" ", "") in path.stem.lower()
 
