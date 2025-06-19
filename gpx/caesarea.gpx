@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gpx creator="Wikiloc - https://www.wikiloc.com" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<?xml version='1.0' encoding='utf-8'?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creator="Wikiloc - https://www.wikiloc.com" version="1.1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
   <metadata>
     <name>Wikiloc - Caesarea</name>
     <link href="https://www.wikiloc.com/hiking-trails/caesarea-114673353">
@@ -7,10 +7,10 @@
     </link>
     <time>2022-09-26T17:31:39Z</time>
   </metadata>
-  <trk>
+  <wpt lat="32.5086" lon="34.892"><name>Roman Aqueduct</name></wpt><wpt lat="32.5078" lon="34.8925"><name>Ancient Harbor</name></wpt><wpt lat="32.5069" lon="34.8929"><name>Crusader Gate</name></wpt><wpt lat="32.5061" lon="34.8933"><name>Museum Plaza</name></wpt><wpt lat="32.5053" lon="34.8937"><name>Beach Lookout</name></wpt><trk>
     <name>Caesarea</name>
-    <cmt></cmt>
-    <desc></desc>
+    <cmt />
+    <desc />
     <trkseg>
       <trkpt lat="32.513638" lon="34.896106">
         <ele>17.423</ele>
