@@ -370,5 +370,98 @@
         }
       }
     ]
+  },
+  {
+    "id": 5,
+    "name": "HodHasharon Park Loop",
+    "latitude": 32.1327,
+    "longitude": 34.8915,
+    "length_km": 3.1,
+    "closest_city": "HodHasharon",
+    "image_url": "/experience/images/HodHaSharonPark.jpg",
+    "gpx_file": "hod-hasharon-park.gpx",
+    "history": "Once a swamp and city landfill, this transformed park now offers scenic hiking trails through eucalyptus groves and around an ecological lake. Enjoy wildlife sightings, educational signs, and panoramic views from the repurposed hilltop.",
+    "checkpoints": [
+      {
+        "lat": 32.1327, 
+        "lon": 34.8915,
+        "title": "Yarkon Springs",
+        "quiz": {
+          "question": "What natural feature used to dominate this area?",
+          "options": [
+            "Forest",
+            "Swamp",
+            "Desert",
+            "Lake"
+          ],
+          "answer": "Swamp"
+        },
+        "challenge": {
+          "type": "photo",
+          "keyword": "springs",
+          "prompt": "Take a photo of the Yarkon Springs and add a short summary."
+        }
+      },
+      {
+        "lat": 32.095733,
+        "lon": 34.778732,
+        "title": "Bicycle Bridge",
+        "quiz": {
+          "question": "Which mode of transport is this bridge primarily designed for?",
+          "options": [
+            "Cars",
+            "Trains",
+            "Bicycles",
+            "Pedestrians"
+          ],
+          "answer": "Bicycles"
+        }
+      },
+      {
+        "lat": 32.09802,
+        "lon": 34.777602,
+        "title": "Picnic Grove",
+        "quiz": {
+          "question": "What activity is common in this area?",
+          "options": [
+            "Camping",
+            "Surfing",
+            "Picnicking",
+            "Skiing"
+          ],
+          "answer": "Picnicking"
+        }
+      },
+      {
+        "lat": 32.096863,
+        "lon": 34.783183,
+        "title": "Birdwatch Point",
+        "quiz": {
+          "question": "Which of these birds is often seen here?",
+          "options": [
+            "Eagle",
+            "Seagull",
+            "Pelican",
+            "Sparrow"
+          ],
+          "answer": "Sparrow"
+        }
+      },
+      {
+        "lat": 32.098652,
+        "lon": 34.795573,
+        "title": "Riverside Exit",
+        "quiz": {
+          "question": "Where does this trail lead you back to?",
+          "options": [
+            "City Center",
+            "Riverside",
+            "Mountain Top",
+            "Desert"
+          ],
+          "answer": "Riverside"
+        }
+      }
+    ]
   }
 ]
