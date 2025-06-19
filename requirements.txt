@@ -8,3 +8,4 @@ numpy
 starlette
 anyio
 Pillow
+python-multipart
