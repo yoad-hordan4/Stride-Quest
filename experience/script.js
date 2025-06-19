@@ -226,6 +226,7 @@ function checkAnswer(selected, correct) {
       <p>${result}</p>
       <p>${currentCheckpoint.challenge.prompt}</p>
       <button onclick="takePhoto()">📸 Take Photo</button>
+      <button onclick="nextCheckpoint()">➡️ Continue</button>
     `;
   } else {
     document.getElementById('checkpointArea').innerHTML = `
@@ -399,6 +400,7 @@ function displayPhoto(photoUrl) {
     <div style="margin-top:1rem;">
       <button onclick="retakePhoto()">🔄 Retake</button>
       <button onclick="submitPhoto()">✅ Submit</button>
+      <button onclick="nextCheckpoint()">➡️ Continue</button>
     </div>
   `;
 }
