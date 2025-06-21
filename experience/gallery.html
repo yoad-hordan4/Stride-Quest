@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Photos</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    main { max-width: 600px; margin: auto; text-align: center; }
+    img { width: 100%; max-width: 300px; margin-bottom: 1rem; border-radius: 8px; }
+    button { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <header>StrideQuest - Gallery</header>
+  <main id="gallery"></main>
+  <button onclick="goBack()">⬅️ Back</button>
+  <script>
+    function loadPhotos() {
+      const photos = JSON.parse(localStorage.getItem('capturedPhotos') || '[]');
+      const gal = document.getElementById('gallery');
+      if (photos.length === 0) {
+        gal.innerHTML = '<p>No photos taken.</p>';
+        return;
+      }
+      gal.innerHTML = photos.map(p => `<img src="${p}" alt="photo">`).join('');
+    }
+    function goBack() { window.location.href = 'index.html'; }
+    loadPhotos();
+  </script>
+</body>
+</html>

@@ -14,6 +14,7 @@ let locationIntervalId = null;
 let map, userMarker, checkpointMarkers = [];
 let trailLine = null;
 let currentPhotoUrl = null;
+let capturedPhotos = JSON.parse(localStorage.getItem('capturedPhotos') || '[]');
 
 // ✅ Expose public functions so buttons can call them
 window.getLocation = getLocation;
@@ -26,6 +27,7 @@ window.nextCheckpoint = nextCheckpoint;
 window.takePhoto = takePhoto;
 window.retakePhoto = retakePhoto;
 window.submitPhoto = submitPhoto;
+window.viewGallery = viewGallery;
 
 function getLocation() {
   if (navigator.geolocation) {
@@ -111,6 +113,8 @@ function startHike(trailId) {
     document.getElementById('gameArea').style.display = 'block';
     document.getElementById('photoArea').innerHTML = '';
     currentPhotoUrl = null;
+    capturedPhotos = [];
+    localStorage.setItem('capturedPhotos', JSON.stringify(capturedPhotos));
   
     // 🚨 Clear previous content just in case
     document.getElementById('trailInfo').innerHTML = '';
@@ -238,9 +242,15 @@ function checkAnswer(selected, correct) {
 function nextCheckpoint() {
   currentCheckpointIndex++;
   if (currentCheckpointIndex >= currentTrail.checkpoints.length) {
-    document.getElementById('checkpointArea').innerHTML = `<h3>🎉 Trail Complete!</h3>`;
+    document.getElementById('checkpointArea').innerHTML = `
+      <h3>🎉 Trail Complete!</h3>
+      <button onclick="viewGallery()">📷 View Photos</button>
+      <button onclick="exitGame()">🏠 Done</button>
+    `;
     document.getElementById('photoArea').innerHTML = '';
     currentPhotoUrl = null;
+    if (watcherId) navigator.geolocation.clearWatch(watcherId);
+    if (locationIntervalId) { clearInterval(locationIntervalId); locationIntervalId = null; }
     return;
   }
 
@@ -439,6 +449,8 @@ function submitPhoto() {
         <img src="${currentPhotoUrl}" alt="Captured Photo" style="width:50%; border-radius:8px; margin-top:1rem;">
         <p>${resultMsg}</p>
       `;
+      capturedPhotos.push(currentPhotoUrl);
+      localStorage.setItem('capturedPhotos', JSON.stringify(capturedPhotos));
       document.getElementById('checkpointArea').innerHTML = `
         <button onclick="nextCheckpoint()">➡️ Continue</button>
       `;
@@ -447,4 +459,9 @@ function submitPhoto() {
       console.error('Error submitting photo:', err);
     });
 }
+
+function viewGallery() {
+  window.location.href = 'gallery.html';
+}
+
 
