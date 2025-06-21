@@ -226,7 +226,6 @@ function checkAnswer(selected, correct) {
       <p>${result}</p>
       <p>${currentCheckpoint.challenge.prompt}</p>
       <button onclick="takePhoto()">📸 Take Photo</button>
-      <button onclick="nextCheckpoint()">➡️ Continue</button>
     `;
   } else {
     document.getElementById('checkpointArea').innerHTML = `
@@ -403,6 +402,13 @@ function displayPhoto(photoUrl) {
       <button onclick="nextCheckpoint()">➡️ Continue</button>
     </div>
   `;
+  // Remove old continue button from the quiz area to avoid duplicates
+  const cpArea = document.getElementById('checkpointArea');
+  cpArea.querySelectorAll('button').forEach(btn => {
+    if (btn.getAttribute('onclick')?.includes('nextCheckpoint')) {
+      btn.remove();
+    }
+  });
 }
 
 function retakePhoto() {
@@ -426,11 +432,13 @@ function submitPhoto() {
     .then(data => {
       const photoArea = document.getElementById('photoArea');
       const percent = Math.round((data.score || 0) * 100);
-      if (data.valid) {
-        photoArea.innerHTML += `<p>✅ Photo accepted! Score: ${percent}%</p>`;
-      } else {
-        photoArea.innerHTML += `<p>❌ Photo did not match (score ${percent}%).</p>`;
-      }
+      const resultMsg = data.valid
+        ? `✅ Photo accepted! Score: ${percent}%`
+        : `❌ Photo did not match (score ${percent}%).`;
+      photoArea.innerHTML = `
+        <img src="${currentPhotoUrl}" alt="Captured Photo" style="width:50%; border-radius:8px; margin-top:1rem;">
+        <p>${resultMsg}</p>
+      `;
       document.getElementById('checkpointArea').innerHTML = `
         <button onclick="nextCheckpoint()">➡️ Continue</button>
       `;
