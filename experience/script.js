@@ -198,9 +198,23 @@ function exitGame() {
 function handlePositionUpdate(position) {
   const userLat = position.coords.latitude;
   const userLon = position.coords.longitude;
-  const checkpoint = currentTrail.checkpoints[currentCheckpointIndex];
-  const dist = getDistance(userLat, userLon, checkpoint.lat, checkpoint.lon);
-  if (dist < 0.05) triggerCheckpoint(checkpoint);
+  fetch(`${BASE_URL}/progress/check`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      trail_id: currentTrail.id,
+      checkpoint_index: currentCheckpointIndex,
+      latitude: userLat,
+      longitude: userLon
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.reached) {
+        triggerCheckpoint(currentTrail.checkpoints[currentCheckpointIndex]);
+      }
+    })
+    .catch(err => console.error('Error checking progress:', err));
 }
 
 function triggerCheckpoint(cp) {
@@ -297,19 +311,7 @@ function updateProgress() {
   document.getElementById('progressLabel').innerText = `Checkpoint ${current + 1} of ${total}`;
 }
 
-function getDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371;
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a = Math.sin(dLat / 2) ** 2 +
-            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-            Math.sin(dLon / 2) ** 2;
-  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-}
 
-function toRad(value) {
-  return value * Math.PI / 180;
-}
 
 function playBeep() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
