@@ -131,7 +131,7 @@ function startHike(trailId) {
         <p id="progressLabel">Checkpoint 1 of ${currentTrail.checkpoints.length}</p>
       </div>
   
-      <div id="map" style="height: 80vh; margin-top: 20px;"></div>
+      <div id="map" style="height: 65vh; margin-top: 20px; width:100%;"></div>
   
       <div id="checkpointArea" style="margin-top:20px;">
         <p><strong>Next checkpoint:</strong> ${currentTrail.checkpoints[0].title}</p>
