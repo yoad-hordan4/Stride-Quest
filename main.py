@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from routes import quizzes, trails
-from routes import challenges
+from routes import challenges, progress
 from pathlib import Path
 import utils.photo_taker as photo_taker
 
@@ -28,6 +28,7 @@ app.mount("/experience", StaticFiles(directory=experience_dir, html=True), name=
 app.include_router(trails.router, prefix="/trails", tags=["Trails"])
 app.include_router(quizzes.router, prefix="/quizzes", tags=["Quizzes"])
 app.include_router(challenges.router, prefix="/challenges", tags=["Challenges"])
+app.include_router(progress.router, prefix="/progress", tags=["Progress"])
 
 # Automatic redirection to experience
 @app.get("/", include_in_schema=False)
