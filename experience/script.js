@@ -13,6 +13,8 @@ let watcherId = null;
 let locationIntervalId = null;
 let map, userMarker, checkpointMarkers = [];
 let trailLine = null;
+let walkedPath = null;
+let walkedPoints = [];
 let currentPhotoUrl = null;
 let capturedPhotos = JSON.parse(localStorage.getItem('capturedPhotos') || '[]');
 
@@ -115,6 +117,8 @@ function startHike(trailId) {
     currentPhotoUrl = null;
     capturedPhotos = [];
     localStorage.setItem('capturedPhotos', JSON.stringify(capturedPhotos));
+    walkedPoints = [];
+    if (walkedPath) { walkedPath.remove(); walkedPath = null; }
   
     // 🚨 Clear previous content just in case
     document.getElementById('trailInfo').innerHTML = '';
@@ -127,7 +131,7 @@ function startHike(trailId) {
         <p id="progressLabel">Checkpoint 1 of ${currentTrail.checkpoints.length}</p>
       </div>
   
-      <div id="map" style="height: 300px; margin-top: 20px;"></div>
+      <div id="map" style="height: 80vh; margin-top: 20px;"></div>
   
       <div id="checkpointArea" style="margin-top:20px;">
         <p><strong>Next checkpoint:</strong> ${currentTrail.checkpoints[0].title}</p>
@@ -146,7 +150,6 @@ function startHike(trailId) {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
       if (!map) initMap(lat, lon);
-      else userMarker.setLatLng([lat, lon]);
       handlePositionUpdate(pos);
     }, showError, {
       enableHighAccuracy: true,
@@ -160,7 +163,6 @@ function startHike(trailId) {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
         if (!map) initMap(lat, lon);
-        else userMarker.setLatLng([lat, lon]);
         handlePositionUpdate(pos);
       }, showError, { enableHighAccuracy: true });
     }, 5000);
@@ -198,6 +200,16 @@ function exitGame() {
 function handlePositionUpdate(position) {
   const userLat = position.coords.latitude;
   const userLon = position.coords.longitude;
+  if (map && userMarker) {
+    userMarker.setLatLng([userLat, userLon]);
+    map.setView([userLat, userLon]);
+  }
+  walkedPoints.push([userLat, userLon]);
+  if (walkedPath) {
+    walkedPath.setLatLngs(walkedPoints);
+  } else if (map) {
+    walkedPath = L.polyline(walkedPoints, { color: 'orange' }).addTo(map);
+  }
   fetch(`${BASE_URL}/progress/check`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -281,7 +293,6 @@ function nextCheckpoint() {
     const lat = pos.coords.latitude;
     const lon = pos.coords.longitude;
     if (!map) initMap(lat, lon);
-    else userMarker.setLatLng([lat, lon]);
     handlePositionUpdate(pos);
   }, showError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
 
@@ -291,7 +302,6 @@ function nextCheckpoint() {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
       if (!map) initMap(lat, lon);
-      else userMarker.setLatLng([lat, lon]);
       handlePositionUpdate(pos);
     }, showError, { enableHighAccuracy: true });
   }, 5000);
@@ -354,6 +364,8 @@ function showError(error) {
     }
     if (userMarker) {
       userMarker.setLatLng([DEFAULT_LAT, DEFAULT_LON]);
+      walkedPoints.push([DEFAULT_LAT, DEFAULT_LON]);
+      if (walkedPath) walkedPath.setLatLngs(walkedPoints);
     }
   } else {
     showPosition({ coords: { latitude: DEFAULT_LAT, longitude: DEFAULT_LON } });
@@ -370,7 +382,12 @@ function initMap(lat, lon) {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  userMarker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
+  userMarker = L.circleMarker([lat, lon], {
+    radius: 8,
+    color: 'red',
+    fillColor: 'red',
+    fillOpacity: 1
+  }).addTo(map).bindPopup("You are here").openPopup();
   checkpointMarkers = currentTrail.checkpoints.map(cp =>
     L.marker([cp.lat, cp.lon]).addTo(map).bindPopup(cp.title)
   );
@@ -380,6 +397,10 @@ function initMap(lat, lon) {
     : currentTrail.checkpoints.map(cp => [cp.lat, cp.lon]);
   if (trailLine) trailLine.remove();
   trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
+
+  walkedPoints = [[lat, lon]];
+  if (walkedPath) walkedPath.remove();
+  walkedPath = L.polyline(walkedPoints, { color: 'orange' }).addTo(map);
 }
 
 function takePhoto() {
