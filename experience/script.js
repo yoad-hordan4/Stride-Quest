@@ -244,6 +244,7 @@ function nextCheckpoint() {
   if (currentCheckpointIndex >= currentTrail.checkpoints.length) {
     document.getElementById('checkpointArea').innerHTML = `
       <h3>🎉 Trail Complete!</h3>
+      <p>Would you like to view your photos?</p>
       <button onclick="viewGallery()">📷 View Photos</button>
       <button onclick="exitGame()">🏠 Done</button>
     `;
