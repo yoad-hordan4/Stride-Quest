@@ -27,3 +27,8 @@ http://127.0.0.1:8000/experience/
 ```
 This page lets you find nearby trails, view details, and play through checkpoints.
 
+### Taking Photos
+
+When running the experience on a mobile device, the "Take Photo" button will
+open your device's camera. Ensure your browser has permission to use the camera.
+
