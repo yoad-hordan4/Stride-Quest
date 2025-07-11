@@ -16,6 +16,7 @@ let trailLine = null;
 let walkedPath = null;
 let walkedPoints = [];
 let currentPhotoUrl = null;
+let currentPhotoBlob = null;
 let capturedPhotos = JSON.parse(localStorage.getItem('capturedPhotos') || '[]');
 
 // ✅ Expose public functions so buttons can call them
@@ -404,25 +405,13 @@ function initMap(lat, lon) {
 }
 
 function takePhoto() {
-  fetch(`${BASE_URL}/take-photo`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' }
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.photo_url) {
-      const cacheBustedUrl = `${data.photo_url}?t=${Date.now()}`;
-      currentPhotoUrl = cacheBustedUrl;
-      displayPhoto(cacheBustedUrl);
-
-    } else {
-      alert("Failed to take photo.");
-    }
-  })
-  .catch(error => {
-    console.error("Error taking photo:", error);
-    alert("An error occurred while taking the photo.");
-  });
+  const camInput = document.getElementById('cameraInput');
+  if (camInput) {
+    camInput.value = '';
+    camInput.click();
+  } else {
+    alert('Camera input element not found.');
+  }
 }
 
 function displayPhoto(photoUrl) {
@@ -449,18 +438,14 @@ function retakePhoto() {
 }
 
 function submitPhoto() {
-  if (!currentPhotoUrl || !currentCheckpoint?.challenge?.keyword) return;
-  fetch(currentPhotoUrl)
-    .then(res => res.blob())
-    .then(blob => {
-      const fd = new FormData();
-      fd.append('image', new File([blob], 'photo.jpg', { type: blob.type }));
-      fd.append('keyword', currentCheckpoint.challenge.keyword);
-      return fetch(`${BASE_URL}/challenges/validate`, {
-        method: 'POST',
-        body: fd
-      });
-    })
+  if (!currentPhotoBlob || !currentCheckpoint?.challenge?.keyword) return;
+  const fd = new FormData();
+  fd.append('image', currentPhotoBlob, 'photo.jpg');
+  fd.append('keyword', currentCheckpoint.challenge.keyword);
+  fetch(`${BASE_URL}/challenges/validate`, {
+    method: 'POST',
+    body: fd
+  })
     .then(res => res.json())
     .then(data => {
       const photoArea = document.getElementById('photoArea');
@@ -486,5 +471,23 @@ function submitPhoto() {
 function viewGallery() {
   window.location.href = 'gallery.html';
 }
+
+// Initialize camera input handling
+document.addEventListener('DOMContentLoaded', () => {
+  const camInput = document.getElementById('cameraInput');
+  if (camInput) {
+    camInput.addEventListener('change', event => {
+      const file = event.target.files[0];
+      if (!file) return;
+      currentPhotoBlob = file;
+      const reader = new FileReader();
+      reader.onload = e => {
+        currentPhotoUrl = e.target.result;
+        displayPhoto(currentPhotoUrl);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+});
 
 
