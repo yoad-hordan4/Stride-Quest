@@ -311,7 +311,7 @@ function nextCheckpoint() {
 }
 
 function skipToNextCheckpoint() {
-  triggerCheckpoint(currentTrail.checkpoints[currentCheckpointIndex]);
+  nextCheckpoint();
 }
 
 function updateProgress() {
@@ -434,6 +434,7 @@ function displayPhoto(photoUrl) {
 }
 
 function retakePhoto() {
+  currentPhotoBlob = null;
   takePhoto();
 }
 
