@@ -18,6 +18,7 @@ let walkedPoints = [];
 let currentPhotoUrl = null;
 let currentPhotoBlob = null;
 let capturedPhotos = JSON.parse(localStorage.getItem('capturedPhotos') || '[]');
+let hasFirstFix = false; // becomes true after first real GPS fix to avoid default-origin path
 
 // expose public functions so buttons can call them
 window.getLocation = getLocation;
@@ -102,12 +103,13 @@ function getTrailInfo() {
 function startHike(trailId) {
     currentTrail = nearbyTrails.find(t => t.id == trailId);
     currentCheckpointIndex = 0;
-  
+    hasFirstFix = false;
+
     if (!currentTrail || !currentTrail.checkpoints?.length) {
       alert("No checkpoints available for this trail.");
       return;
     }
-  
+
     // hide all pre-game UI
     document.getElementById('preGame').style.display = 'none';
     document.getElementById('trailInfo').style.display = 'none';
@@ -120,26 +122,26 @@ function startHike(trailId) {
     localStorage.setItem('capturedPhotos', JSON.stringify(capturedPhotos));
     walkedPoints = [];
     if (walkedPath) { walkedPath.remove(); walkedPath = null; }
-  
+
     // clear previous content just in case
     document.getElementById('trailInfo').innerHTML = '';
     document.getElementById('gameArea').innerHTML = `
       <h2>🗺️ ${currentTrail.name} - Hike in Progress</h2>
       <p>${currentTrail.history}</p>
-  
+
       <div id="progressDisplay">
         <progress id="trailProgress" value="0" max="1" style="width:100%;"></progress>
         <p id="progressLabel">Checkpoint 1 of ${currentTrail.checkpoints.length}</p>
       </div>
-  
+
       <div id="map" style="height: 80vh; margin-top: 20px;"></div>
-  
+
       <div id="checkpointArea" style="margin-top:20px;">
         <p><strong>Next checkpoint:</strong> ${currentTrail.checkpoints[0].title}</p>
         <button onclick="skipToNextCheckpoint()">🚀 Skip to next (dev only)</button>
       </div>
     `;
-  
+
     console.log(`Starting hike on: ${currentTrail.name}`);
     console.log(`Current checkpoint: ${currentTrail.checkpoints[0].title}`);
 
@@ -201,15 +203,29 @@ function exitGame() {
 function handlePositionUpdate(position) {
   const userLat = position.coords.latitude;
   const userLon = position.coords.longitude;
+
+  if (!hasFirstFix) {
+    // First real GPS fix: initialize the walked path without connecting from defaults
+    if (!map) initMap(userLat, userLon);
+    walkedPoints = [[userLat, userLon]];
+    if (walkedPath) { walkedPath.remove(); walkedPath = null; }
+    if (map) {
+      walkedPath = L.polyline(walkedPoints, { color: 'orange' }).addTo(map);
+    }
+    hasFirstFix = true;
+  }
+
   if (map && userMarker) {
     userMarker.setLatLng([userLat, userLon]);
     map.setView([userLat, userLon]);
   }
-  walkedPoints.push([userLat, userLon]);
-  if (walkedPath) {
-    walkedPath.setLatLngs(walkedPoints);
-  } else if (map) {
-    walkedPath = L.polyline(walkedPoints, { color: 'orange' }).addTo(map);
+  if (hasFirstFix) {
+    walkedPoints.push([userLat, userLon]);
+    if (walkedPath) {
+      walkedPath.setLatLngs(walkedPoints);
+    } else if (map) {
+      walkedPath = L.polyline(walkedPoints, { color: 'orange' }).addTo(map);
+    }
   }
   fetch(`${BASE_URL}/progress/check`, {
     method: 'POST',
@@ -365,7 +381,7 @@ function showError(error) {
     }
     if (userMarker) {
       userMarker.setLatLng([DEFAULT_LAT, DEFAULT_LON]);
-      walkedPoints.push([DEFAULT_LAT, DEFAULT_LON]);
+      // Do not append default point to walked path; wait for real GPS fix
       if (walkedPath) walkedPath.setLatLngs(walkedPoints);
     }
   } else {
@@ -399,9 +415,9 @@ function initMap(lat, lon) {
   if (trailLine) trailLine.remove();
   trailLine = L.polyline(points, { color: 'blue' }).addTo(map);
 
-  walkedPoints = [[lat, lon]];
-  if (walkedPath) walkedPath.remove();
-  walkedPath = L.polyline(walkedPoints, { color: 'orange' }).addTo(map);
+  // Do not seed walked path here; wait for first real GPS fix
+  walkedPoints = [];
+  if (walkedPath) { walkedPath.remove(); walkedPath = null; }
 }
 
 function takePhoto() {
@@ -424,13 +440,6 @@ function displayPhoto(photoUrl) {
       <button onclick="nextCheckpoint()">➡️ Continue</button>
     </div>
   `;
-  // Remove old continue button from the quiz area to avoid duplicates
-  const cpArea = document.getElementById('checkpointArea');
-  cpArea.querySelectorAll('button').forEach(btn => {
-    if (btn.getAttribute('onclick')?.includes('nextCheckpoint')) {
-      btn.remove();
-    }
-  });
 }
 
 function retakePhoto() {
@@ -456,6 +465,9 @@ function submitPhoto() {
       photoArea.innerHTML = `
         <img src="${currentPhotoUrl}" alt="Captured Photo" style="width:50%; border-radius:8px; margin-top:1rem;">
         <p>${resultMsg}</p>
+        <div style="margin-top:1rem;">
+          <button onclick="nextCheckpoint()">➡️ Continue</button>
+        </div>
       `;
       capturedPhotos.push(currentPhotoUrl);
       localStorage.setItem('capturedPhotos', JSON.stringify(capturedPhotos));
