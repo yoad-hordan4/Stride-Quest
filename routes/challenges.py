@@ -6,7 +6,7 @@ router = APIRouter()
 
 @router.post("/validate")
 async def validate_challenge(image: UploadFile = File(...), keyword: str = Form(...)):
-    """Validate an uploaded photo by comparing it to a reference image."""
+    # Validate an uploaded photo by comparing it to a reference image
     temp_path = Path("/tmp") / image.filename
     with temp_path.open("wb") as f:
         f.write(await image.read())

@@ -7,7 +7,7 @@ PHOTO_DIR = Path(__file__).resolve().parent.parent / "experience" / "images"
 PHOTO_DIR.mkdir(parents=True, exist_ok=True)
 
 def _next_photo_path() -> Path:
-    """Generate a unique file name for the captured photo."""
+    # Generate a unique file name for the captured photo
     timestamp = time.strftime("%Y%m%d_%H%M%S")
     return PHOTO_DIR / f"user_photo_{timestamp}.jpg"
 
@@ -34,7 +34,7 @@ def photo_saver(image, filename: Path):
     return filename
 
 def taker() -> Path:
-    """Capture a photo and save it to a unique file."""
+    # Capture a photo and save it to unique file.
     image = take_photo()
     path = _next_photo_path()
     result = photo_saver(image, path)

@@ -18,12 +18,8 @@ SCORE_THRESHOLD = 0.5
 
 
 def validate_photo(image_path: str, keyword: str) -> bool:
-    """Simple placeholder validation for location photos.
-
-    Checks that the image exists, is a valid image type, and that the
-    filename contains the expected keyword. A real implementation would
-    use computer vision to analyze the scene.
-    """
+    # Checks the image exists, is a valid type and that the
+    # filename contains expected keyword. 
     path = Path(image_path)
     if not path.exists():
         return False
@@ -36,7 +32,7 @@ def validate_photo(image_path: str, keyword: str) -> bool:
 
 
 def image_similarity(img1_path: str, img2_path: str) -> float:
-    """Compute a rough similarity score between two images using ORB features."""
+    # Compute a rough similarity score between two images using ORB features.
     img1 = cv2.imread(img1_path, cv2.IMREAD_GRAYSCALE)
     img2 = cv2.imread(img2_path, cv2.IMREAD_GRAYSCALE)
     if img1 is None or img2 is None:
@@ -58,7 +54,7 @@ def image_similarity(img1_path: str, img2_path: str) -> float:
 
 
 def score_photo(image_path: str, keyword: str) -> Optional[float]:
-    """Return a similarity score between uploaded photo and reference image."""
+    # Return a similarity score between uploaded photo and reference image.
     ref_name = KEYWORD_IMAGES.get(keyword.lower())
     if not ref_name:
         return None

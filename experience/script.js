@@ -1,5 +1,5 @@
 'use strict';
-
+// usually incase chrome doesnt give permission access to location
 const DEFAULT_LAT = 32.1670;
 const DEFAULT_LON = 34.8045;
 
@@ -19,7 +19,7 @@ let currentPhotoUrl = null;
 let currentPhotoBlob = null;
 let capturedPhotos = JSON.parse(localStorage.getItem('capturedPhotos') || '[]');
 
-// ✅ Expose public functions so buttons can call them
+// expose public functions so buttons can call them
 window.getLocation = getLocation;
 window.getTrailInfo = getTrailInfo;
 window.startHike = startHike;
@@ -108,7 +108,7 @@ function startHike(trailId) {
       return;
     }
   
-    // 👉 Hide all pre-game UI
+    // hide all pre-game UI
     document.getElementById('preGame').style.display = 'none';
     document.getElementById('trailInfo').style.display = 'none';
     document.getElementById('trailSelectArea').style.display = 'none';
@@ -121,7 +121,7 @@ function startHike(trailId) {
     walkedPoints = [];
     if (walkedPath) { walkedPath.remove(); walkedPath = null; }
   
-    // 🚨 Clear previous content just in case
+    // clear previous content just in case
     document.getElementById('trailInfo').innerHTML = '';
     document.getElementById('gameArea').innerHTML = `
       <h2>🗺️ ${currentTrail.name} - Hike in Progress</h2>
@@ -140,13 +140,13 @@ function startHike(trailId) {
       </div>
     `;
   
-    console.log(`🚶‍♂️ Starting hike on: ${currentTrail.name}`);
-    console.log(`⏩ Current checkpoint: ${currentTrail.checkpoints[0].title}`);
+    console.log(`Starting hike on: ${currentTrail.name}`);
+    console.log(`Current checkpoint: ${currentTrail.checkpoints[0].title}`);
 
-    // 📍 Show map even before we have a location
+    // show map even before we have a location
     initMap(DEFAULT_LAT, DEFAULT_LON);
 
-    // 📍 Start live tracking
+    // start live tracking
     watcherId = navigator.geolocation.watchPosition(pos => {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
@@ -182,7 +182,7 @@ function exitGame() {
       document.getElementById('photoArea').innerHTML = '';
       currentPhotoUrl = null;
   
-      // Clear game state
+      // clear game state
       document.getElementById('gameArea').innerHTML = '';
       currentCheckpointIndex = 0;
       currentTrail = null;
@@ -249,8 +249,8 @@ function triggerCheckpoint(cp) {
 
 function checkAnswer(selected, correct) {
   const result = selected === correct
-    ? "✅ Correct! Great job."
-    : `❌ Oops! The correct answer was: ${correct}`;
+    ? "Correct! Great job."
+    : `Oh no! The correct answer was: ${correct}`;
 
   if (currentCheckpoint?.challenge?.type === 'photo') {
     document.getElementById('checkpointArea').innerHTML = `
@@ -271,8 +271,8 @@ function nextCheckpoint() {
   if (currentCheckpointIndex >= currentTrail.checkpoints.length) {
     document.getElementById('checkpointArea').innerHTML = `
       <h3>🎉 Trail Complete!</h3>
-      <button onclick="viewGallery()">📷 View Photos</button>
-      <button onclick="exitGame()">🏠 Done</button>
+      <button onclick="viewGallery()">View Photos</button>
+      <button onclick="exitGame()">Done</button>
     `;
     document.getElementById('photoArea').innerHTML = '';
     currentPhotoUrl = null;
@@ -284,7 +284,7 @@ function nextCheckpoint() {
   const cp = currentTrail.checkpoints[currentCheckpointIndex];
   document.getElementById('checkpointArea').innerHTML = `
     <p><strong>Next checkpoint:</strong> ${cp.title}</p>
-    <button onclick="skipToNextCheckpoint()">🚀 Skip to next (dev only)</button>
+    <button onclick="skipToNextCheckpoint()">Skip to next (dev only)</button>
   `;
   document.getElementById('photoArea').innerHTML = '';
   currentPhotoUrl = null;
@@ -375,7 +375,7 @@ function showError(error) {
 
 function initMap(lat, lon) {
   if (map) {
-    map.remove(); // ✅ destroy previous map instance
+    map.remove(); // destroy previous map instance
   }
 
   map = L.map('map').setView([lat, lon], 15);
@@ -419,8 +419,8 @@ function displayPhoto(photoUrl) {
   photoArea.innerHTML = `
     <img src="${photoUrl}" alt="Captured Photo" style="width:50%; border-radius:8px; margin-top:1rem;">
     <div style="margin-top:1rem;">
-      <button onclick="retakePhoto()">🔄 Retake</button>
-      <button onclick="submitPhoto()">✅ Submit</button>
+      <button onclick="retakePhoto()">Retake</button>
+      <button onclick="submitPhoto()">Submit</button>
       <button onclick="nextCheckpoint()">➡️ Continue</button>
     </div>
   `;
@@ -451,8 +451,8 @@ function submitPhoto() {
       const photoArea = document.getElementById('photoArea');
       const percent = Math.round((data.score || 0) * 100);
       const resultMsg = data.valid
-        ? `✅ Photo accepted! Score: ${percent}%`
-        : `❌ Photo did not match (score ${percent}%).`;
+        ? `Photo accepted! Score: ${percent}%`
+        : `Photo did not match (score ${percent}%).`;
       photoArea.innerHTML = `
         <img src="${currentPhotoUrl}" alt="Captured Photo" style="width:50%; border-radius:8px; margin-top:1rem;">
         <p>${resultMsg}</p>
@@ -472,7 +472,7 @@ function viewGallery() {
   window.location.href = 'gallery.html';
 }
 
-// Initialize camera input handling
+// initialize camera input handling
 document.addEventListener('DOMContentLoaded', () => {
   const camInput = document.getElementById('cameraInput');
   if (camInput) {

@@ -14,7 +14,7 @@ MAX_DIST = 200  # in km, must match frontend expectation
 logging.basicConfig(level=logging.INFO)
 
 def parse_gpx_file(filename):
-    """Parse a GPX file and return a list of points."""
+    # Parse a GPX file and return a list of checkpoints (lat, lon)
     path = GPX_DIR / filename
     if not path.exists():
         logging.warning(f"GPX file not found: {path}")
@@ -34,7 +34,7 @@ def parse_gpx_file(filename):
     return points
 
 def snap_checkpoints_to_trail(checkpoints, gpx_points):
-    """Move checkpoint coordinates to the nearest point on the GPX track."""
+    # Move checkpoint coordinates to the nearest point on the GPX track.
     if not checkpoints or not gpx_points:
         return checkpoints
 
@@ -58,7 +58,7 @@ def validate_coordinates(lat, lon):
     return -90 <= lat <= 90 and -180 <= lon <= 180
 
 def find_nearby_trails(user_lat, user_lon, radius_km=MAX_DIST):
-    """Returns trails within a given radius of the user location."""
+    # Returns trails within a given radius of the user location
     if not validate_coordinates(user_lat, user_lon):
         raise ValueError("Invalid coordinates provided.")
 
@@ -93,7 +93,7 @@ def find_nearby_trails(user_lat, user_lon, radius_km=MAX_DIST):
     return sorted(nearby, key=lambda t: t["distance_km"])
 
 def get_trail_by_id(trail_id: int):
-    """Fetch a single trail by its unique ID."""
+    # Fetch a single trail by its unique ID
     try:
         with open(TRAILS_PATH, "r") as f:
             trails = json.load(f)
