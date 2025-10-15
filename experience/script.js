@@ -18,7 +18,11 @@ let walkedPoints = [];
 let currentPhotoUrl = null;
 let currentPhotoBlob = null;
 let capturedPhotos = JSON.parse(localStorage.getItem('capturedPhotos') || '[]');
+
 let hasFirstFix = false; // becomes true after first real GPS fix to avoid default-origin path
+
+let totalQuestions = 0;     // number of quiz questions in the current trail
+let correctAnswers = 0;     // number of correct answers the user gave
 
 // expose public functions so buttons can call them
 window.getLocation = getLocation;
@@ -97,6 +101,16 @@ function getTrailInfo() {
     <p><strong>History:</strong> ${selected.history ?? 'No history available.'}</p>
     <button onclick="startHike(${selected.id})">Start Hike</button>
   `;
+  // Show last score if present
+  try {
+    const scores = JSON.parse(localStorage.getItem('trailScores') || '{}');
+    const last = scores[String(selected.id)];
+    if (last) {
+      const scoreEl = document.createElement('p');
+      scoreEl.innerHTML = `<strong>Last score:</strong> ${last.correct} / ${last.total} (${last.percent}%)`;
+      info.appendChild(scoreEl);
+    }
+  } catch (e) { /* ignore */ }
   info.style.display = 'block';
 }
 
@@ -104,6 +118,13 @@ function startHike(trailId) {
     currentTrail = nearbyTrails.find(t => t.id == trailId);
     currentCheckpointIndex = 0;
     hasFirstFix = false;
+
+    // Reset score for this hike
+    correctAnswers = 0;
+    // Count questions for this trail (defensive: only count checkpoints that have a quiz object)
+    totalQuestions = Array.isArray(currentTrail.checkpoints)
+      ? currentTrail.checkpoints.filter(cp => cp && cp.quiz && typeof cp.quiz.question === 'string').length
+      : 0;
 
     if (!currentTrail || !currentTrail.checkpoints?.length) {
       alert("No checkpoints available for this trail.");
@@ -267,6 +288,7 @@ function checkAnswer(selected, correct) {
   const result = selected === correct
     ? "Correct! Great job."
     : `Oh no! The correct answer was: ${correct}`;
+  if (selected === correct) { correctAnswers++; }
 
   if (currentCheckpoint?.challenge?.type === 'photo') {
     document.getElementById('checkpointArea').innerHTML = `
@@ -285,11 +307,23 @@ function checkAnswer(selected, correct) {
 function nextCheckpoint() {
   currentCheckpointIndex++;
   if (currentCheckpointIndex >= currentTrail.checkpoints.length) {
+    const percentScore = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
     document.getElementById('checkpointArea').innerHTML = `
       <h3>🎉 Trail Complete!</h3>
-      <button onclick="viewGallery()">View Photos</button>
-      <button onclick="exitGame()">Done</button>
+      <p><strong>Your Score:</strong> ${correctAnswers} / ${totalQuestions} (${percentScore}%)</p>
+      <div style="margin-top:0.75rem;">
+        <button onclick="viewGallery()">📷 View Photos</button>
+        <button onclick="exitGame()">🏠 Done</button>
+      </div>
     `;
+    try {
+      // Persist last score per trail for future use
+      const scores = JSON.parse(localStorage.getItem('trailScores') || '{}');
+      scores[String(currentTrail.id)] = { correct: correctAnswers, total: totalQuestions, percent: percentScore, finishedAt: new Date().toISOString() };
+      localStorage.setItem('trailScores', JSON.stringify(scores));
+    } catch (e) {
+      console.warn('Could not persist score:', e);
+    }
     document.getElementById('photoArea').innerHTML = '';
     currentPhotoUrl = null;
     if (watcherId) navigator.geolocation.clearWatch(watcherId);
